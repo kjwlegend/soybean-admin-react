@@ -186,6 +186,12 @@ export const generatedRoutes: ElegantConstRoute[] = [
             },
             children: [
               {
+                matchedFiles: [null, '/src/pages/(base)/manage/config/index.tsx', null, null],
+                name: '(base)_manage_config',
+                path: '/manage/config',
+                handle: { i18nKey: 'route.(base)_manage_config', title: '(base)_manage_config' }
+              },
+              {
                 matchedFiles: [null, '/src/pages/(base)/manage/role/index.tsx', null, null],
                 name: '(base)_manage_role',
                 path: '/manage/role',

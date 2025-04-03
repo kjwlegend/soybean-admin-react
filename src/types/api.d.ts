@@ -17,10 +17,13 @@ declare namespace Api {
 
     /** common params of paginating query list data */
     interface PaginatingQueryRecord<T = any> extends PaginatingCommonParams {
-      records: T[];
+      items: T[];
     }
 
-    type CommonSearchParams = Pick<Common.PaginatingCommonParams, 'current' | 'size'>;
+    type CommonSearchParams = Pick<
+      Common.PaginatingCommonParams,
+      "current" | "size"
+    >;
 
     /**
      * enable status
@@ -28,7 +31,7 @@ declare namespace Api {
      * - "1": enabled
      * - "2": disabled
      */
-    type EnableStatus = '1' | '2';
+    type EnableStatus = "1" | "2";
 
     /** common record */
     type CommonRecord<T = any> = {
@@ -54,19 +57,23 @@ declare namespace Api {
    */
   namespace Auth {
     interface LoginToken {
-      refreshToken: string;
-      token: string;
+      refresh_token: string;
+      access_token: string;
     }
 
     interface UserInfo {
       buttons: string[];
       roles: string[];
-      userId: string;
-      userName: string;
+      role: object;
+      role_id: number;
+      id: string;
+      username: string;
+      email: string;
+      is_superuser: boolean;
     }
 
     type Info = {
-      token: LoginToken['token'];
+      token: LoginToken["access_token"];
       userInfo: UserInfo;
     };
   }
@@ -77,14 +84,15 @@ declare namespace Api {
    * backend api module: "route"
    */
   namespace Route {
-    type ElegantConstRoute = import('@soybean-react/vite-plugin-react-router').ElegantConstRoute;
+    type ElegantConstRoute =
+      import("@soybean-react/vite-plugin-react-router").ElegantConstRoute;
 
     interface MenuRoute extends ElegantConstRoute {
       id: string;
     }
 
     interface UserRoute {
-      home: import('@soybean-react/vite-plugin-react-router').LastLevelRouteKey;
+      home: import("@soybean-react/vite-plugin-react-router").LastLevelRouteKey;
       routes: string[];
     }
   }
@@ -95,28 +103,32 @@ declare namespace Api {
    * backend api module: "systemManage"
    */
   namespace SystemManage {
-    type CommonSearchParams = Pick<Common.PaginatingCommonParams, 'current' | 'size'>;
+    type CommonSearchParams = Pick<
+      Common.PaginatingCommonParams,
+      "current" | "size"
+    >;
 
     /** role */
     type Role = Common.CommonRecord<{
       /** role code */
-      roleCode: string;
+      id: number;
       /** role description */
-      roleDesc: string;
+      description: string;
       /** role name */
-      roleName: string;
+      name: string;
     }>;
 
     /** role search params */
     type RoleSearchParams = CommonType.RecordNullable<
-      Pick<Api.SystemManage.Role, 'roleCode' | 'roleName' | 'status'> & CommonSearchParams
+      Pick<Api.SystemManage.Role, "id" | "description" | "name"> &
+        CommonSearchParams
     >;
 
     /** role list */
     type RoleList = Common.PaginatingQueryRecord<Role>;
 
     /** all role */
-    type AllRole = Pick<Role, 'id' | 'roleCode' | 'roleName'>;
+    type AllRole = Pick<Role, "id" | "description" | "name">;
 
     /**
      * user gender
@@ -124,7 +136,7 @@ declare namespace Api {
      * - "1": "male"
      * - "2": "female"
      */
-    type UserGender = '1' | '2';
+    type UserGender = "1" | "2";
 
     /** user */
     type User = Common.CommonRecord<{
@@ -133,18 +145,37 @@ declare namespace Api {
       /** user email */
       userEmail: string;
       /** user gender */
-      userGender: UserGender | null;
+      is_active: boolean;
       /** user name */
       userName: string;
       /** user phone */
       userPhone: string;
       /** user role code collection */
       userRoles: string[];
+      password: string;
+      id: number;
     }>;
+
+    type UserCreateParams = {
+      nickName: string;
+      userName: string;
+      password: string;
+      userEmail: string;
+      is_active: boolean;
+      userPhone: string;
+    };
 
     /** user search params */
     type UserSearchParams = CommonType.RecordNullable<
-      Pick<Api.SystemManage.User, 'nickName' | 'status' | 'userEmail' | 'userGender' | 'userName' | 'userPhone'> &
+      Pick<
+        Api.SystemManage.User,
+        | "nickName"
+        | "status"
+        | "userEmail"
+        | "is_active"
+        | "userName"
+        | "userPhone"
+      > &
         CommonSearchParams
     >;
 
@@ -157,7 +188,7 @@ declare namespace Api {
      * - "1": directory
      * - "2": menu
      */
-    type MenuType = '1' | '2';
+    type MenuType = "1" | "2";
 
     type MenuButton = {
       /**
@@ -176,20 +207,20 @@ declare namespace Api {
      * - "1": iconify icon
      * - "2": local icon
      */
-    type IconType = '1' | '2';
+    type IconType = "1" | "2";
 
     type MenuPropsOfRoute = Pick<
-      import('@soybean-react/vite-plugin-react-router').RouteMeta,
-      | 'activeMenu'
-      | 'constant'
-      | 'fixedIndexInTab'
-      | 'hideInMenu'
-      | 'href'
-      | 'i18nKey'
-      | 'keepAlive'
-      | 'multiTab'
-      | 'order'
-      | 'query'
+      import("@soybean-react/vite-plugin-react-router").RouteMeta,
+      | "activeMenu"
+      | "constant"
+      | "fixedIndexInTab"
+      | "hideInMenu"
+      | "href"
+      | "i18nKey"
+      | "keepAlive"
+      | "multiTab"
+      | "order"
+      | "query"
     >;
 
     type Menu = Common.CommonRecord<{
@@ -225,5 +256,20 @@ declare namespace Api {
       label: string;
       pId: number;
     };
+
+    /** 系统配置项 */
+    type ConfigItem = Common.CommonRecord<{
+      id: number;
+      key: string;
+      value: string;
+      description: string;
+    }>;
+    /** 系统配置搜索参数 */
+    type ConfigSearchParams = CommonType.RecordNullable<
+      Pick<ConfigItem, "key" | "value" | "status"> & CommonSearchParams
+    >;
+
+    /** 系统配置列表 */
+    type ConfigList = Common.PaginatingQueryRecord<ConfigItem>;
   }
 }

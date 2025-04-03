@@ -43,6 +43,7 @@ declare module "@soybean-react/vite-plugin-react-router" {
     "(base)_function_use-request": "/function/use-request";
     "(base)_home": "/home";
     "(base)_manage": "/manage";
+    "(base)_manage_config": "/manage/config";
     "(base)_manage_role": "/manage/role";
     "(base)_manage_role_[...slug]": "/manage/role/*";
     "(base)_manage_user": "/manage/user";
@@ -149,6 +150,7 @@ declare module "@soybean-react/vite-plugin-react-router" {
     | "(base)_function_use-request"
     | "(base)_home"
     | "(base)"
+    | "(base)_manage_config"
     | "(base)_manage"
     | "(base)_manage_role_[...slug]"
     | "(base)_manage_role"

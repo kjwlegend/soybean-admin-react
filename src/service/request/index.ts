@@ -1,27 +1,40 @@
-import { BACKEND_ERROR_CODE, createFlatRequest, createRequest } from '@sa/axios';
+import {
+  BACKEND_ERROR_CODE,
+  createFlatRequest,
+  createRequest,
+} from "@sa/axios";
 
-import { getServiceBaseURL } from '@/utils/service';
-import { localStg } from '@/utils/storage';
+import { getServiceBaseURL } from "@/utils/service";
+import { localStg } from "@/utils/storage";
 
-import { backEndFail, handleError } from './error';
-import { getAuthorization } from './shared';
-import type { RequestInstanceState } from './type';
+import { backEndFail, handleError } from "./error";
+import { getAuthorization } from "./shared";
+import type { RequestInstanceState } from "./type";
 
-const isHttpProxy = import.meta.env.DEV && import.meta.env.VITE_HTTP_PROXY === 'Y';
-const { baseURL, otherBaseURL } = getServiceBaseURL(import.meta.env, isHttpProxy);
+const isHttpProxy =
+  import.meta.env.DEV && import.meta.env.VITE_HTTP_PROXY === "Y";
+const { baseURL, otherBaseURL } = getServiceBaseURL(
+  import.meta.env,
+  isHttpProxy,
+);
 
-export const request = createFlatRequest<App.Service.Response, RequestInstanceState>(
+export const request = createFlatRequest<
+  App.Service.Response,
+  RequestInstanceState
+>(
   {
     baseURL,
     headers: {
-      apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2'
-    }
+      apifoxToken: "XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2",
+    },
   },
   {
     isBackendSuccess(response) {
       // when the backend response code is "0000"(default), it means the request is success
       // to change this logic by yourself, you can modify the `VITE_SERVICE_SUCCESS_CODE` in `.env` file
-      return String(response.data.code) === import.meta.env.VITE_SERVICE_SUCCESS_CODE;
+      return (
+        String(response.data.code) === import.meta.env.VITE_SERVICE_SUCCESS_CODE
+      );
     },
     async onBackendFail(response, instance) {
       await backEndFail(response, instance, request);
@@ -36,20 +49,21 @@ export const request = createFlatRequest<App.Service.Response, RequestInstanceSt
       return config;
     },
     transformBackendResponse(response) {
+      console.log(response);
       return response.data.data;
-    }
-  }
+    },
+  },
 );
 
 export const demoRequest = createRequest<App.Service.DemoResponse>(
   {
-    baseURL: otherBaseURL.demo
+    baseURL: otherBaseURL.demo,
   },
   {
     isBackendSuccess(response) {
       // when the backend response code is "200", it means the request is success
       // you can change this logic by yourself
-      return response.data.status === '200';
+      return response.data.status === "200";
     },
     async onBackendFail(_response) {
       // when the backend response code is not "200", it means the request is fail
@@ -71,7 +85,7 @@ export const demoRequest = createRequest<App.Service.DemoResponse>(
       const { headers } = config;
 
       // set token
-      const token = localStg.get('token');
+      const token = localStg.get("token");
       const Authorization = token ? `Bearer ${token}` : null;
       Object.assign(headers, { Authorization });
 
@@ -79,6 +93,6 @@ export const demoRequest = createRequest<App.Service.DemoResponse>(
     },
     transformBackendResponse(response) {
       return response.data.result;
-    }
-  }
+    },
+  },
 );

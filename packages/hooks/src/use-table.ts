@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
-import type { URLSearchParamsInit } from 'react-router-dom';
-import { useSearchParams } from 'react-router-dom';
+import { useEffect, useRef, useState } from "react";
+import type { URLSearchParamsInit } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
-import useBoolean from './use-boolean';
-import useLoading from './use-loading';
+import useBoolean from "./use-boolean";
+import useLoading from "./use-loading";
 
 export type MaybePromise<T> = T | Promise<T>;
 
@@ -24,7 +24,9 @@ export type TransformedData<T> = {
   total: number;
 };
 
-export type Transformer<T, Response> = (response: Response) => TransformedData<T>;
+export type Transformer<T, Response> = (
+  response: Response,
+) => TransformedData<T>;
 
 export type TableConfig<A extends ApiFn, T, C> = {
   /** api function to get table data */
@@ -61,14 +63,25 @@ export type TableConfig<A extends ApiFn, T, C> = {
   transformer: Transformer<T, Awaited<ReturnType<A>>>;
 };
 
-export default function useHookTable<A extends ApiFn, T, C>(config: TableConfig<A, T, C>) {
-  const { apiFn, apiParams, getColumnChecks, getColumns, immediate = true, transformer } = config;
+export default function useHookTable<A extends ApiFn, T, C>(
+  config: TableConfig<A, T, C>,
+) {
+  const {
+    apiFn,
+    apiParams,
+    getColumnChecks,
+    getColumns,
+    immediate = true,
+    transformer,
+  } = config;
 
   const { endLoading, loading, startLoading } = useLoading();
 
   const { bool: empty, setBool: setEmpty } = useBoolean();
 
-  const searchParams = useRef<Parameters<A>[0]>(apiParams || { current: 1, size: 10 });
+  const searchParams = useRef<Parameters<A>[0]>(
+    apiParams || { current: 1, size: 10 },
+  );
 
   const [_, setSearchParams] = useSearchParams();
 
@@ -78,10 +91,12 @@ export default function useHookTable<A extends ApiFn, T, C>(config: TableConfig<
     data: [],
     pageNum: 1,
     pageSize: 10,
-    total: 0
+    total: 0,
   });
 
-  const [columnChecks, setColumnChecks] = useState<TableColumnCheck[]>(getColumnChecks(allColumns));
+  const [columnChecks, setColumnChecks] = useState<TableColumnCheck[]>(
+    getColumnChecks(allColumns),
+  );
 
   const columns = getColumns(allColumns, columnChecks);
 
@@ -93,8 +108,10 @@ export default function useHookTable<A extends ApiFn, T, C>(config: TableConfig<
     setSearchParams(formattedParams as URLSearchParamsInit);
 
     const response = await apiFn(formattedParams);
+    console.log("response", response);
 
     const transformed = transformer(response as Awaited<ReturnType<A>>);
+    console.log("transformed", transformed);
 
     setData(transformed);
 
@@ -110,7 +127,9 @@ export default function useHookTable<A extends ApiFn, T, C>(config: TableConfig<
    *
    * @param params
    */
-  function updateSearchParams(params: Partial<Parameters<A>[0]> | { current?: number }) {
+  function updateSearchParams(
+    params: Partial<Parameters<A>[0]> | { current?: number },
+  ) {
     Object.assign(searchParams.current, params);
     getData();
   }
@@ -138,10 +157,14 @@ export default function useHookTable<A extends ApiFn, T, C>(config: TableConfig<
     searchParams: formatSearchParams(searchParams.current) as Parameters<A>[0],
     setColumnChecks,
     total: data.total,
-    updateSearchParams
+    updateSearchParams,
   };
 }
 
 function formatSearchParams(params: Record<string, unknown>) {
-  return Object.fromEntries(Object.entries(params).filter(([_, value]) => value !== null && value !== undefined));
+  return Object.fromEntries(
+    Object.entries(params).filter(
+      ([_, value]) => value !== null && value !== undefined,
+    ),
+  );
 }

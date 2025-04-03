@@ -1,116 +1,148 @@
-import { useBoolean, useHookTable } from '@sa/hooks';
-import type { TablePaginationConfig, TableProps } from 'antd';
-import { Form } from 'antd';
+import { useBoolean, useHookTable } from "@sa/hooks";
+import type { TablePaginationConfig, TableProps } from "antd";
+import { Form } from "antd";
 
-import { parseQuery } from '@/features/router/query';
-import { getIsMobile } from '@/layouts/appStore';
+import { parseQuery } from "@/features/router/query";
+import { getIsMobile } from "@/layouts/appStore";
 
 type TableData = AntDesign.TableData;
 type GetTableData<A extends AntDesign.TableApiFn> = AntDesign.GetTableData<A>;
 type TableColumn<T> = AntDesign.TableColumn<T>;
-
+// 表格Hook，用于处理表格相关的状态和操作
 export function useTable<A extends AntDesign.TableApiFn>(
+  // 表格配置参数
   config: AntDesign.AntDesignTableConfig<A>,
-  paginationConfig?: Omit<TablePaginationConfig, 'current' | 'onChange' | 'pageSize' | 'total'>
+  // 分页配置参数
+  paginationConfig?: Omit<
+    TablePaginationConfig,
+    "current" | "onChange" | "pageSize" | "total"
+  >,
 ) {
+  // 获取是否为移动设备
   const isMobile = useAppSelector(getIsMobile);
 
-  const { apiFn, apiParams, immediate, rowKey = 'id' } = config;
+  // 解构配置参数
+  const { apiFn, apiParams, immediate, rowKey = "id" } = config;
 
-  const [form] = Form.useForm<AntDesign.AntDesignTableConfig<A>['apiParams']>();
+  // 创建表单实例
+  const [form] = Form.useForm<AntDesign.AntDesignTableConfig<A>["apiParams"]>();
 
+  // 获取URL搜索参数
   const { search } = useLocation();
 
+  // 解析URL查询参数
   const query = parseQuery(search) as unknown as Parameters<A>[0];
 
+  // 使用表格Hook获取表格数据和状态
   const {
-    columnChecks,
-    columns,
-    data,
-    empty,
-    loading,
-    pageNum,
-    pageSize,
-    resetSearchParams,
-    searchParams,
-    setColumnChecks,
-    total,
-    updateSearchParams
-  } = useHookTable<A, GetTableData<A>, TableColumn<AntDesign.TableDataWithIndex<GetTableData<A>>>>({
+    columnChecks, // 列选择状态
+    columns, // 表格列配置
+    data, // 表格数据
+    empty, // 是否为空
+    loading, // 加载状态
+    pageNum, // 当前页码
+    pageSize, // 每页条数
+    resetSearchParams, // 重置搜索参数方法
+    searchParams, // 搜索参数
+    setColumnChecks, // 设置列选择状态方法
+    total, // 总数据条数
+    updateSearchParams, // 更新搜索参数方法
+  } = useHookTable<
+    A,
+    GetTableData<A>,
+    TableColumn<AntDesign.TableDataWithIndex<GetTableData<A>>>
+  >({
     apiFn,
     apiParams: { ...apiParams, ...query },
     columns: config.columns,
-    getColumnChecks: cols => {
+    // 获取列选择配置
+    getColumnChecks: (cols) => {
       const checks: AntDesign.TableColumnCheck[] = [];
 
-      cols.forEach(column => {
+      cols.forEach((column) => {
         if (column.key) {
           checks.push({
             checked: true,
             key: column.key as string,
-            title: column.title as string
+            title: column.title as string,
           });
         }
       });
 
       return checks;
     },
+    // 获取过滤后的列配置
     getColumns: (cols, checks) => {
-      const columnMap = new Map<string, TableColumn<AntDesign.TableDataWithIndex<GetTableData<A>>>>();
+      const columnMap = new Map<
+        string,
+        TableColumn<AntDesign.TableDataWithIndex<GetTableData<A>>>
+      >();
 
-      cols.forEach(column => {
+      cols.forEach((column) => {
         if (column.key) {
           columnMap.set(column.key as string, column);
         }
       });
 
-      const filteredColumns = checks.filter(item => item.checked).map(check => columnMap.get(check.key));
+      const filteredColumns = checks
+        .filter((item) => item.checked)
+        .map((check) => columnMap.get(check.key));
 
-      return filteredColumns as TableColumn<AntDesign.TableDataWithIndex<GetTableData<A>>>[];
+      return filteredColumns as TableColumn<
+        AntDesign.TableDataWithIndex<GetTableData<A>>
+      >[];
     },
     immediate,
-    transformer: res => {
-      const { current = 1, records = [], size = 10, total: totalNum = 0 } = res.data || {};
+    // 数据转换器
+    transformer: (res) => {
+      const {
+        current = 1,
+        items = [],
+        size = 10,
+        total: totalNum = 0,
+      } = res.data || {};
 
-      const recordsWithIndex = records.map((item, index) => {
+      // 为数据添加索引
+      const itemsWithIndex = items.map((item, index) => {
         return {
           ...item,
-          index: (current - 1) * size + index + 1
+          index: (current - 1) * size + index + 1,
         };
       });
 
       return {
-        data: recordsWithIndex,
+        data: itemsWithIndex,
         pageNum: current,
         pageSize: size,
-        total: totalNum
+        total: totalNum,
       };
-    }
+    },
   });
 
-  // this is for mobile, if the system does not support mobile, you can use `pagination` directly
+  // 分页配置
   const pagination: TablePaginationConfig = {
     current: pageNum,
     onChange: async (current: number, size: number) => {
       updateSearchParams({
         current,
-        size
+        size,
       });
     },
     pageSize,
-    pageSizeOptions: ['10', '15', '20', '25', '30'],
+    pageSizeOptions: ["10", "15", "20", "25", "30"],
     showSizeChanger: true,
     simple: isMobile,
     total,
-    ...paginationConfig
+    ...paginationConfig,
   };
 
+  // 重置表单和搜索参数
   function reset() {
     form.resetFields();
-
     resetSearchParams();
   }
 
+  // 执行搜索
   async function run(isResetCurrent: boolean = true) {
     const res = await form.validateFields();
 
@@ -124,6 +156,7 @@ export function useTable<A extends AntDesign.TableApiFn>(
     }
   }
 
+  // 返回表格相关的状态和方法
   return {
     columnChecks,
     data,
@@ -134,7 +167,7 @@ export function useTable<A extends AntDesign.TableApiFn>(
       form,
       reset,
       search: run,
-      searchParams: searchParams as NonNullable<Parameters<A>[0]>
+      searchParams: searchParams as NonNullable<Parameters<A>[0]>,
     },
     setColumnChecks,
     tableProps: {
@@ -142,98 +175,111 @@ export function useTable<A extends AntDesign.TableApiFn>(
       dataSource: data,
       loading,
       pagination,
-      rowKey
-    }
+      rowKey,
+    },
   };
 }
 
+// 表格操作Hook，用于处理表格的增删改查操作
 export function useTableOperate<T extends TableData = TableData>(
   data: T[],
   getData: (isResetCurrent?: boolean) => Promise<void>,
-  executeResActions: (res: T, operateType: AntDesign.TableOperateType) => void
+  executeResActions: (res: T, operateType: AntDesign.TableOperateType) => void,
 ) {
-  const { bool: drawerVisible, setFalse: closeDrawer, setTrue: openDrawer } = useBoolean();
+  // 抽屉显示状态控制
+  const {
+    bool: drawerVisible,
+    setFalse: closeDrawer,
+    setTrue: openDrawer,
+  } = useBoolean();
 
+  // 国际化
   const { t } = useTranslation();
 
-  const [operateType, setOperateType] = useState<AntDesign.TableOperateType>('add');
+  // 操作类型状态
+  const [operateType, setOperateType] =
+    useState<AntDesign.TableOperateType>("add");
 
+  // 创建表单实例
   const [form] = Form.useForm<T>();
 
+  // 处理添加操作
   function handleAdd() {
-    setOperateType('add');
+    setOperateType("add");
     openDrawer();
   }
 
-  /** the editing row data */
+  // 编辑数据状态
   const [editingData, setEditingData] = useState<T>();
 
-  function handleEdit(idOrData: T['id'] | T) {
-    if (typeof idOrData === 'object') {
+  // 处理编辑操作
+  function handleEdit(idOrData: T["id"] | T) {
+    // 判断传入的参数是对象（完整的数据记录）还是 ID
+    if (typeof idOrData === "object") {
+      // 如果是对象，直接设置表单值和编辑状态
       form.setFieldsValue(idOrData);
-
       setEditingData(idOrData);
     } else {
-      const findItem = data.find(item => item.id === idOrData);
+      // 如果是 ID，需要从数据列表中查找对应的记录
+      const findItem = data.find((item) => item.id === idOrData);
       if (findItem) {
+        // 找到后设置表单值和编辑状态
         form.setFieldsValue(findItem);
-
         setEditingData(findItem);
       }
     }
-
-    setOperateType('edit');
+    // 设置操作类型为编辑模式
+    setOperateType("edit");
+    // 打开抽屉
     openDrawer();
   }
 
-  /** the checked row keys of table */
+  // 选中行的key数组
   const [checkedRowKeys, setCheckedRowKeys] = useState<React.Key[]>([]);
 
+  // 处理选择变化
   function onSelectChange(keys: React.Key[]) {
     setCheckedRowKeys(keys);
   }
 
-  const rowSelection: TableProps<T>['rowSelection'] = {
+  // 行选择配置
+  const rowSelection: TableProps<T>["rowSelection"] = {
     columnWidth: 48,
     fixed: true,
     onChange: onSelectChange,
     selectedRowKeys: checkedRowKeys,
-    type: 'checkbox'
+    type: "checkbox",
   };
 
+  // 关闭抽屉
   function onClose() {
     closeDrawer();
-
     form.resetFields();
   }
 
-  /** the hook after the batch delete operation is completed */
+  // 批量删除后的处理
   async function onBatchDeleted() {
-    window.$message?.success(t('common.deleteSuccess'));
+    window.$message?.success(t("common.deleteSuccess"));
     setCheckedRowKeys([]);
-
     await getData(false);
   }
 
-  /** the hook after the delete operation is completed */
+  // 删除后的处理
   async function onDeleted() {
-    window.$message?.success(t('common.deleteSuccess'));
-
+    window.$message?.success(t("common.deleteSuccess"));
     await getData(false);
   }
 
+  // 提交表单
   async function handleSubmit() {
     const res = await form.validateFields();
-
-    // request
     await executeResActions(res, operateType);
-
-    window.$message?.success(t('common.updateSuccess'));
-
+    window.$message?.success(t("common.updateSuccess"));
     onClose();
     getData();
   }
 
+  // 返回表格操作相关的状态和方法
   return {
     checkedRowKeys,
     closeDrawer,
@@ -244,7 +290,7 @@ export function useTableOperate<T extends TableData = TableData>(
       handleSubmit,
       onClose,
       open: drawerVisible,
-      operateType
+      operateType,
     },
     handleAdd,
     handleEdit,
@@ -253,30 +299,34 @@ export function useTableOperate<T extends TableData = TableData>(
     onSelectChange,
     openDrawer,
     operateType,
-    rowSelection
+    rowSelection,
   };
 }
 
+// 表格滚动Hook，用于处理表格的滚动配置
 export function useTableScroll(scrollX: number = 702) {
+  // 表格容器引用
   const tableWrapperRef = useRef<HTMLDivElement>(null);
 
+  // 获取容器尺寸
   const size = useSize(tableWrapperRef);
 
+  // 计算表格Y轴滚动高度
   function getTableScrollY() {
     const height = size?.height;
-
     if (!height) return undefined;
-
     return height - 160;
   }
 
+  // 滚动配置
   const scrollConfig = {
     x: scrollX,
-    y: getTableScrollY()
+    y: getTableScrollY(),
   };
 
+  // 返回滚动相关的配置和引用
   return {
     scrollConfig,
-    tableWrapperRef
+    tableWrapperRef,
   };
 }

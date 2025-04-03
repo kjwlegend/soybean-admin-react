@@ -1,8 +1,8 @@
-import type { DescriptionsProps } from 'antd';
-import { type LoaderFunctionArgs, useLoaderData } from 'react-router-dom';
+import type { DescriptionsProps } from "antd";
+import { type LoaderFunctionArgs, useLoaderData } from "react-router-dom";
 
-import LookForward from '@/components/LookForward';
-import { fetchGetUserList } from '@/service/api';
+import LookForward from "@/components/LookForward";
+import { fetchGetUserList } from "@/service/api";
 
 type Item<T> = T extends any[] ? T[number] : T;
 
@@ -11,12 +11,12 @@ type ValuesOf<T> = T[keyof T];
 type Values = ValuesOf<Api.SystemManage.User>;
 
 function transformDataToItem<T extends string, U extends Values>(
-  tuple: [T, U]
-): NonNullable<Item<DescriptionsProps['items']>> {
+  tuple: [T, U],
+): NonNullable<Item<DescriptionsProps["items"]>> {
   return {
     children: tuple[1],
     key: tuple[0],
-    label: tuple[0]
+    label: tuple[0],
   };
 }
 
@@ -33,17 +33,15 @@ const Component = () => {
   const items = Object.entries(data).map(transformDataToItem);
 
   return (
-    <ACard
-      className="h-full"
-      title="User Info"
-    >
-      <ADescriptions
-        bordered
-        items={items}
-      />
-      <div className="mt-16px text-center text-18px">{t('page.manage.userDetail.explain')}</div>
+    <ACard className="h-full" title="User Info">
+      <ADescriptions bordered items={items} />
+      <div className="mt-16px text-center text-18px">
+        {t("page.manage.userDetail.explain")}
+      </div>
 
-      <div className="mt-16px text-center text-18px">{t('page.manage.userDetail.content')}</div>
+      <div className="mt-16px text-center text-18px">
+        {t("page.manage.userDetail.content")}
+      </div>
     </ACard>
   );
 };
@@ -52,7 +50,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
   const { data, error } = await fetchGetUserList();
   if (error) return null;
 
-  const info = data.records.find(item => String(item.id) === params.id);
+  const info = data.items.find((item) => String(item.id) === params.id);
   return info;
 }
 

@@ -1,4 +1,4 @@
-import { request } from '../request';
+import { request } from "../request";
 
 /**
  * Login
@@ -7,19 +7,23 @@ import { request } from '../request';
  * @param password Password
  */
 export function fetchLogin(userName: string, password: string) {
+  const formData = new FormData();
+  formData.append("username", userName);
+  formData.append("password", password);
+
   return request<Api.Auth.LoginToken>({
-    data: {
-      password,
-      userName
+    data: formData,
+    method: "post",
+    url: "/admin/login",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
     },
-    method: 'post',
-    url: '/auth/login'
   });
 }
 
 /** Get user info */
 export function fetchGetUserInfo() {
-  return request<Api.Auth.UserInfo>({ url: '/auth/getUserInfo' });
+  return request<Api.Auth.UserInfo>({ url: "/admin/me" });
 }
 
 /**
@@ -30,10 +34,10 @@ export function fetchGetUserInfo() {
 export function fetchRefreshToken(refreshToken: string) {
   return request<Api.Auth.LoginToken>({
     data: {
-      refreshToken
+      refreshToken,
     },
-    method: 'post',
-    url: '/auth/refreshToken'
+    method: "post",
+    url: "/auth/refreshToken",
   });
 }
 
@@ -44,5 +48,5 @@ export function fetchRefreshToken(refreshToken: string) {
  * @param msg error message
  */
 export function fetchCustomBackendError(code: string, msg: string) {
-  return request({ params: { code, msg }, url: '/auth/error' });
+  return request({ params: { code, msg }, url: "/auth/error" });
 }

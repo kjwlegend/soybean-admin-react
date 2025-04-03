@@ -1,7 +1,7 @@
-import { useRequest } from '@sa/hooks';
-import type { DescriptionsProps } from 'antd';
+import { useRequest } from "@sa/hooks";
+import type { DescriptionsProps } from "antd";
 
-import { fetchGetUserList } from '@/service/api';
+import { fetchGetUserList } from "@/service/api";
 
 const { Title } = ATypography;
 
@@ -12,12 +12,12 @@ type ValuesOf<T> = T[keyof T];
 type Values = ValuesOf<Api.SystemManage.User>;
 
 function transformDataToItem<T extends string, U extends Values>(
-  tuple: [T, U]
-): NonNullable<Item<DescriptionsProps['items']>> {
+  tuple: [T, U],
+): NonNullable<Item<DescriptionsProps["items"]>> {
   return {
     children: tuple[1],
     key: tuple[0],
-    label: tuple[0]
+    label: tuple[0],
   };
 }
 
@@ -27,26 +27,21 @@ const Component = () => {
   const { data, loading } = useRequest(fetchGetUserList, {
     params: {
       current,
-      size: 10
-    }
+      size: 10,
+    },
   });
 
-  const items = data ? Object.entries(data.records[0]).map(transformDataToItem) : [];
+  const items = data
+    ? Object.entries(data.items[0]).map(transformDataToItem)
+    : [];
 
   function handleChange() {
     setCurrent(current + 1);
   }
 
   return (
-    <ACard
-      className="h-full card-wrapper"
-      size="small"
-      variant="borderless"
-    >
-      <Title
-        className="mb-8 text-center"
-        level={2}
-      >
+    <ACard className="h-full card-wrapper" size="small" variant="borderless">
+      <Title className="mb-8 text-center" level={2}>
         useRequest 示例
       </Title>
 

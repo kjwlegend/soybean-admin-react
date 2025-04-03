@@ -1,14 +1,18 @@
-import { useLoading } from '@sa/hooks';
+import { useLoading } from "@sa/hooks";
 
-import { getIsLogin, selectUserInfo } from '@/features/auth/authStore';
-import { usePreviousRoute, useRouter } from '@/features/router';
-import { fetchGetUserInfo, fetchLogin } from '@/service/api';
-import { localStg } from '@/utils/storage';
+import { getIsLogin, selectUserInfo } from "@/features/auth/authStore";
+import { usePreviousRoute, useRouter } from "@/features/router";
+import { fetchGetUserInfo, fetchLogin } from "@/service/api";
+import { localStg } from "@/utils/storage";
 
-import { useCacheTabs } from '../tab/tabHooks';
+import { useCacheTabs } from "../tab/tabHooks";
 
-import { resetAuth as resetAuthAction, setToken, setUserInfo } from './authStore';
-import { clearAuthStorage } from './shared';
+import {
+  resetAuth as resetAuthAction,
+  setToken,
+  setUserInfo,
+} from "./authStore";
+import { clearAuthStorage } from "./shared";
 
 export function useAuth() {
   const userInfo = useAppSelector(selectUserInfo);
@@ -20,15 +24,15 @@ export function useAuth() {
       return false;
     }
 
-    if (typeof codes === 'string') {
+    if (typeof codes === "string") {
       return userInfo.buttons.includes(codes);
     }
 
-    return codes.some(code => userInfo.buttons.includes(code));
+    return codes.some((code) => userInfo.buttons.includes(code));
   }
 
   return {
-    hasAuth
+    hasAuth,
   };
 }
 
@@ -43,38 +47,44 @@ export function useInitAuth() {
 
   const { navigate } = useRouter();
 
-  const redirectUrl = searchParams.get('redirect');
+  const redirectUrl = searchParams.get("redirect");
 
-  async function toLogin({ password, userName }: { password: string; userName: string }, redirect = true) {
+  async function toLogin(
+    { password, userName }: { password: string; userName: string },
+    redirect = true,
+  ) {
     if (loading) return;
 
     startLoading();
     const { data: loginToken, error } = await fetchLogin(userName, password);
-
+    console.log(loginToken, error);
     if (!error) {
-      localStg.set('token', loginToken.token);
-      localStg.set('refreshToken', loginToken.refreshToken);
+      localStg.set("token", loginToken.access_token);
+      localStg.set("refreshToken", loginToken.refresh_token);
 
       const { data: info, error: userInfoError } = await fetchGetUserInfo();
+      console.log(info, userInfoError);
 
       if (!userInfoError) {
         // 2. store user info
-        localStg.set('userInfo', info);
+        localStg.set("userInfo", info);
 
-        dispatch(setToken(loginToken.token));
+        dispatch(setToken(loginToken.access_token));
         dispatch(setUserInfo(info));
 
         if (redirect) {
           if (redirectUrl) {
             navigate(redirectUrl);
           } else {
-            navigate('/');
+            navigate("/");
           }
         }
 
         window.$notification?.success({
-          description: t('page.login.common.welcomeBack', { userName: info.userName }),
-          message: t('page.login.common.loginSuccess')
+          description: t("page.login.common.welcomeBack", {
+            userName: info.username,
+          }),
+          message: t("page.login.common.loginSuccess"),
         });
       }
     }
@@ -84,7 +94,7 @@ export function useInitAuth() {
 
   return {
     loading,
-    toLogin
+    toLogin,
   };
 }
 
@@ -108,9 +118,9 @@ export function useResetAuth() {
 
     if (!previousRoute?.handle?.constant) {
       if (previousRoute?.fullPath) {
-        push('/login', { redirect: previousRoute.fullPath }, null, true);
+        push("/login", { redirect: previousRoute.fullPath }, null, true);
       } else {
-        navigate('/login', { replace: true });
+        navigate("/login", { replace: true });
       }
     }
   }

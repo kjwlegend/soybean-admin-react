@@ -1,8 +1,8 @@
-import { localStg } from '@/utils/storage';
+import { localStg } from "@/utils/storage";
 
 /** Get token */
 export function getToken() {
-  return localStg.get('token') || '';
+  return localStg.get("token") || "";
 }
 
 /** Get user info */
@@ -10,10 +10,18 @@ export function getUserInfo() {
   const emptyInfo: Api.Auth.UserInfo = {
     buttons: [],
     roles: [],
-    userId: '',
-    userName: ''
+    is_superuser: false,
+    id: "",
+    username: "",
+    email: "",
+    role: {
+      description: "",
+      id: 0,
+      name: "",
+    },
+    role_id: 0,
   };
-  const userInfo = localStg.get('userInfo') || emptyInfo;
+  const userInfo = localStg.get("userInfo") || emptyInfo;
 
   // fix new property: buttons, this will be removed in the next version `1.1.0`
   if (!userInfo.buttons) {
@@ -25,7 +33,7 @@ export function getUserInfo() {
 
 /** Clear auth storage */
 export function clearAuthStorage() {
-  localStg.remove('token');
-  localStg.remove('refreshToken');
-  localStg.remove('userInfo');
+  localStg.remove("token");
+  localStg.remove("refreshToken");
+  localStg.remove("userInfo");
 }

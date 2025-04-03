@@ -1,13 +1,18 @@
-import { Suspense } from 'react';
+import { Suspense } from "react";
 
-import { enableStatusRecord } from '@/constants/business';
-import { ATG_MAP } from '@/constants/common';
-import { TableHeaderOperation, useTable, useTableOperate, useTableScroll } from '@/features/table';
-import { fetchGetRoleList } from '@/service/api';
+import { enableStatusRecord } from "@/constants/business";
+import { ATG_MAP } from "@/constants/common";
+import {
+  TableHeaderOperation,
+  useTable,
+  useTableOperate,
+  useTableScroll,
+} from "@/features/table";
+import { fetchGetRoleList } from "@/service/api";
 
-import RoleSearch from './modules/role-search';
+import RoleSearch from "./modules/role-search";
 
-const RoleOperateDrawer = lazy(() => import('./modules/role-operate-drawer'));
+const RoleOperateDrawer = lazy(() => import("./modules/role-operate-drawer"));
 
 const Role = () => {
   const { t } = useTranslation();
@@ -18,94 +23,89 @@ const Role = () => {
 
   const { scrollConfig, tableWrapperRef } = useTableScroll();
 
-  const { columnChecks, data, run, searchProps, setColumnChecks, tableProps } = useTable({
-    apiFn: fetchGetRoleList,
-    apiParams: {
-      current: 1,
-      roleCode: undefined,
-      roleName: undefined,
-      size: 10,
-      status: undefined
-    },
-    columns: () => [
-      {
-        align: 'center',
-        dataIndex: 'index',
-        key: 'index',
-        title: t('common.index'),
-        width: 64
+  const { columnChecks, data, run, searchProps, setColumnChecks, tableProps } =
+    useTable({
+      apiFn: fetchGetRoleList,
+      apiParams: {
+        current: 1,
+        id: undefined,
+        description: undefined,
+        size: 10,
       },
-      {
-        align: 'center',
-        dataIndex: 'roleName',
-        key: 'roleName',
-        minWidth: 120,
-        title: t('page.manage.role.roleName')
-      },
-      {
-        align: 'center',
-        dataIndex: 'roleCode',
-        key: 'roleCode',
-        minWidth: 120,
-        title: t('page.manage.role.roleCode')
-      },
-      {
-        dataIndex: 'roleDesc',
-        key: 'roleDesc',
-        minWidth: 120,
-        title: t('page.manage.role.roleDesc')
-      },
-      {
-        align: 'center',
-        dataIndex: 'status',
-        key: 'status',
-        render: (_, record) => {
-          if (record.status === null) {
-            return null;
-          }
-          const label = t(enableStatusRecord[record.status]);
-          return <ATag color={ATG_MAP[record.status]}>{label}</ATag>;
+      columns: () => [
+        {
+          align: "center",
+          dataIndex: "index",
+          key: "index",
+          title: t("common.index"),
+          width: 64,
         },
-        title: t('page.manage.role.roleStatus'),
-        width: 100
-      },
-      {
-        align: 'center',
-        key: 'operate',
-        render: (_, record) => (
-          <div className="flex-center gap-8px">
-            <AButton
-              ghost
-              size="small"
-              type="primary"
-              onClick={() => edit(record.id)}
-            >
-              {t('common.edit')}
-            </AButton>
-            <AButton
-              size="small"
-              onClick={() => nav(`/manage/role/${record.id}/${record.roleName}/${record.status}`)}
-            >
-              详情
-            </AButton>
-            <APopconfirm
-              title={t('common.confirmDelete')}
-              onConfirm={() => handleDelete(record.id)}
-            >
+        {
+          align: "center",
+          dataIndex: "description",
+          key: "description",
+          minWidth: 120,
+          title: t("page.manage.role.roleName"),
+        },
+        {
+          align: "center",
+          dataIndex: "name",
+          key: "id",
+          minWidth: 120,
+          title: t("page.manage.role.roleCode"),
+        },
+        {
+          align: "center",
+          dataIndex: "status",
+          key: "status",
+          render: (_, record) => {
+            if (record.status === null) {
+              return null;
+            }
+            const label = t(enableStatusRecord[record.status]);
+            return <ATag color={ATG_MAP[record.status]}>{label}</ATag>;
+          },
+          title: t("page.manage.role.roleStatus"),
+          width: 100,
+        },
+        {
+          align: "center",
+          key: "operate",
+          render: (_, record) => (
+            <div className="flex-center gap-8px">
               <AButton
-                danger
+                ghost
                 size="small"
+                type="primary"
+                onClick={() => edit(record.id)}
               >
-                {t('common.delete')}
+                {t("common.edit")}
               </AButton>
-            </APopconfirm>
-          </div>
-        ),
-        title: t('common.operate'),
-        width: 195
-      }
-    ]
-  });
+              <AButton
+                size="small"
+                onClick={() =>
+                  nav(
+                    `/manage/role/${record.id}/${record.description}/${record.status}`,
+                  )
+                }
+              >
+                详情
+              </AButton>
+              <APopconfirm
+                title={t("common.confirmDelete")}
+                onConfirm={() => handleDelete(record.id)}
+              >
+                <AButton danger size="small">
+                  {t("common.delete")}
+                </AButton>
+              </APopconfirm>
+            </div>
+          ),
+          title: t("common.operate"),
+          width: 195,
+        },
+      ],
+    });
 
   const {
     checkedRowKeys,
@@ -115,9 +115,9 @@ const Role = () => {
     handleEdit,
     onBatchDeleted,
     onDeleted,
-    rowSelection
+    rowSelection,
   } = useTableOperate(data, run, async (res, type) => {
-    if (type === 'add') {
+    if (type === "add") {
       // add request 调用新增的接口
       console.log(res);
     } else {
@@ -148,20 +148,20 @@ const Role = () => {
       <ACollapse
         bordered={false}
         className="card-wrapper"
-        defaultActiveKey={isMobile ? undefined : '1'}
+        defaultActiveKey={isMobile ? undefined : "1"}
         items={[
           {
             children: <RoleSearch {...searchProps} />,
-            key: '1',
-            label: t('common.search')
-          }
+            key: "1",
+            label: t("common.search"),
+          },
         ]}
       />
 
       <ACard
         className="flex-col-stretch sm:flex-1-hidden card-wrapper"
         ref={tableWrapperRef}
-        title={t('page.manage.role.title')}
+        title={t("page.manage.role.title")}
         variant="borderless"
         extra={
           <TableHeaderOperation

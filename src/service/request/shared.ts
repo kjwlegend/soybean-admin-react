@@ -1,12 +1,12 @@
-import { router } from '@/features/router';
-import { localStg } from '@/utils/storage';
+import { router } from "@/features/router";
+import { localStg } from "@/utils/storage";
 
-import { fetchRefreshToken } from '../api';
+import { fetchRefreshToken } from "../api";
 
-import type { RequestInstanceState } from './type';
+import type { RequestInstanceState } from "./type";
 
 export function getAuthorization() {
-  const token = localStg.get('token');
+  const token = localStg.get("token");
   const Authorization = token ? `Bearer ${token}` : null;
 
   return Authorization;
@@ -18,15 +18,15 @@ export function getAuthorization() {
  * @param axiosConfig - request config when the token is expired
  */
 export async function handleRefreshToken() {
-  const refreshToken = localStg.get('refreshToken') || '';
+  const refreshToken = localStg.get("refreshToken") || "";
   const { data, error } = await fetchRefreshToken(refreshToken);
   if (!error) {
-    localStg.set('token', data.token);
-    localStg.set('refreshToken', data.refreshToken);
+    localStg.set("token", data.access_token);
+    localStg.set("refreshToken", data.refresh_token);
     return true;
   }
 
-  router.navigate('/login-out');
+  router.navigate("/login-out");
 
   return false;
 }
@@ -58,12 +58,12 @@ export function showErrorMsg(state: RequestInstanceState, message: string) {
     window.$message?.error({
       content: message,
       onClose: () => {
-        state.errMsgStack = state.errMsgStack.filter(msg => msg !== message);
+        state.errMsgStack = state.errMsgStack.filter((msg) => msg !== message);
 
         setTimeout(() => {
           state.errMsgStack = [];
         }, 5000);
-      }
+      },
     });
   }
 }

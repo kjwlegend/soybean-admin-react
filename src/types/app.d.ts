@@ -2,7 +2,7 @@
 declare namespace App {
   /** Theme namespace */
   namespace Theme {
-    type ColorPaletteNumber = import('@sa/color').ColorPaletteNumber;
+    type ColorPaletteNumber = import("@sa/color").ColorPaletteNumber;
 
     /** Theme setting */
     interface ThemeSetting {
@@ -131,7 +131,7 @@ declare namespace App {
     type BaseToken = Record<string, Record<string, string>>;
 
     interface ThemeSettingTokenColor {
-      'base-text': string;
+      "base-text": string;
       container: string;
       inverted: string;
       layout: string;
@@ -161,10 +161,12 @@ declare namespace App {
 
   /** Global namespace */
   namespace Global {
-    type RouteKey = import('@soybean-react/vite-plugin-react-router').RouteKey;
-    type RouteMap = import('@soybean-react/vite-plugin-react-router').RouteMap;
-    type RoutePath = import('@soybean-react/vite-plugin-react-router').RoutePath;
-    type LastLevelRouteKey = import('@soybean-react/vite-plugin-react-router').LastLevelRouteKey;
+    type RouteKey = import("@soybean-react/vite-plugin-react-router").RouteKey;
+    type RouteMap = import("@soybean-react/vite-plugin-react-router").RouteMap;
+    type RoutePath =
+      import("@soybean-react/vite-plugin-react-router").RoutePath;
+    type LastLevelRouteKey =
+      import("@soybean-react/vite-plugin-react-router").LastLevelRouteKey;
 
     /** The global header props */
     interface HeaderProps {
@@ -205,7 +207,7 @@ declare namespace App {
       title?: string;
     }
 
-    type Breadcrumb = Omit<Menu, 'children'> & {
+    type Breadcrumb = Omit<Menu, "children"> & {
       options?: Breadcrumb[];
     };
 
@@ -255,10 +257,15 @@ declare namespace App {
     };
 
     /** Form rule */
-    type FormRule = import('antd').FormRule;
+    type FormRule = import("antd").FormRule;
 
     /** The global dropdown key */
-    type DropdownKey = 'closeAll' | 'closeCurrent' | 'closeLeft' | 'closeOther' | 'closeRight';
+    type DropdownKey =
+      | "closeAll"
+      | "closeCurrent"
+      | "closeLeft"
+      | "closeOther"
+      | "closeRight";
   }
 
   /**
@@ -267,16 +274,16 @@ declare namespace App {
    * Locales type
    */
   namespace I18n {
-    type RouteKey = import('@soybean-react/vite-plugin-react-router').RouteKey;
+    type RouteKey = import("@soybean-react/vite-plugin-react-router").RouteKey;
 
-    type LangType = 'en-US' | 'zh-CN';
+    type LangType = "en-US" | "zh-CN";
 
     type LangOption = {
       key: LangType;
       label: string;
     };
 
-    type I18nRouteKey = Exclude<RouteKey, 'not-found' | 'root'>;
+    type I18nRouteKey = Exclude<RouteKey, "not-found" | "root">;
 
     type FormMsg = {
       invalid: string;
@@ -488,6 +495,13 @@ declare namespace App {
                 enable: string;
               };
             };
+            config: {
+              title: string;
+              key: string;
+              value: string;
+              description: string;
+              status: string;
+            };
             menu: {
               activeMenu: string;
               addChildMenu: string;
@@ -590,6 +604,7 @@ declare namespace App {
                 userPhone: string;
                 userRole: string;
                 userStatus: string;
+                passwordPlaceholder: string;
               };
               gender: {
                 female: string;
@@ -603,6 +618,7 @@ declare namespace App {
               userPhone: string;
               userRole: string;
               userStatus: string;
+              userPassword: string;
             };
             userDetail: {
               content: string;
@@ -655,15 +671,24 @@ declare namespace App {
             height: string;
           };
           isOnlyExpandCurrentParentMenu: string;
-          layoutMode: { reverseHorizontalMix: string; title: string } & Record<UnionKey.ThemeLayoutMode, string>;
+          layoutMode: { reverseHorizontalMix: string; title: string } & Record<
+            UnionKey.ThemeLayoutMode,
+            string
+          >;
           page: {
             animate: string;
-            mode: { title: string } & Record<UnionKey.ThemePageAnimateMode, string>;
+            mode: { title: string } & Record<
+              UnionKey.ThemePageAnimateMode,
+              string
+            >;
           };
           pageFunTitle: string;
           recommendColor: string;
           recommendColorDesc: string;
-          scrollMode: { title: string } & Record<UnionKey.ThemeScrollMode, string>;
+          scrollMode: { title: string } & Record<
+            UnionKey.ThemeScrollMode,
+            string
+          >;
           sider: {
             collapsedWidth: string;
             inverted: string;
@@ -692,33 +717,57 @@ declare namespace App {
       };
     };
 
-    type GetI18nKey<T extends Record<string, unknown>, K extends keyof T = keyof T> = K extends string
+    type GetI18nKey<
+      T extends Record<string, unknown>,
+      K extends keyof T = keyof T,
+    > = K extends string
       ? T[K] extends Record<string, unknown>
         ? `${K}.${GetI18nKey<T[K]>}`
         : K
       : never;
 
-    type I18nKey = GetI18nKey<Schema['translation']>;
+    type I18nKey = GetI18nKey<Schema["translation"]>;
 
-    type TranslateOptions<Locales extends string> = import('react-i18next').TranslationProps<Locales>;
+    type TranslateOptions<Locales extends string> =
+      import("react-i18next").TranslationProps<Locales>;
 
     interface $T {
       (key: I18nKey): string;
-      (key: I18nKey, plural: number, options?: TranslateOptions<LangType>): string;
-      (key: I18nKey, defaultMsg: string, options?: TranslateOptions<I18nKey>): string;
-      (key: I18nKey, list: unknown[], options?: TranslateOptions<I18nKey>): string;
+      (
+        key: I18nKey,
+        plural: number,
+        options?: TranslateOptions<LangType>,
+      ): string;
+      (
+        key: I18nKey,
+        defaultMsg: string,
+        options?: TranslateOptions<I18nKey>,
+      ): string;
+      (
+        key: I18nKey,
+        list: unknown[],
+        options?: TranslateOptions<I18nKey>,
+      ): string;
       (key: I18nKey, list: unknown[], plural: number): string;
       (key: I18nKey, list: unknown[], defaultMsg: string): string;
-      (key: I18nKey, named: Record<string, unknown>, options?: TranslateOptions<LangType>): string;
+      (
+        key: I18nKey,
+        named: Record<string, unknown>,
+        options?: TranslateOptions<LangType>,
+      ): string;
       (key: I18nKey, named: Record<string, unknown>, plural: number): string;
-      (key: I18nKey, named: Record<string, unknown>, defaultMsg: string): string;
+      (
+        key: I18nKey,
+        named: Record<string, unknown>,
+        defaultMsg: string,
+      ): string;
     }
   }
 
   /** Service namespace */
   namespace Service {
     /** Other baseURL key */
-    type OtherBaseURLKey = 'demo';
+    type OtherBaseURLKey = "demo";
 
     interface ServiceConfigItem {
       /** The backend service base url */
@@ -737,7 +786,7 @@ declare namespace App {
       other: OtherServiceConfigItem[];
     }
 
-    interface SimpleServiceConfig extends Pick<ServiceConfigItem, 'baseURL'> {
+    interface SimpleServiceConfig extends Pick<ServiceConfigItem, "baseURL"> {
       other: Record<OtherBaseURLKey, string>;
     }
 
