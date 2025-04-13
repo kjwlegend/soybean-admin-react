@@ -55,44 +55,33 @@ export const request = createFlatRequest<
   },
 );
 
-export const demoRequest = createRequest<App.Service.DemoResponse>(
+export const ankeRequest = createFlatRequest<App.Service.DemoResponse>(
   {
-    baseURL: otherBaseURL.demo,
+    baseURL: otherBaseURL.app,
   },
   {
     isBackendSuccess(response) {
-      // when the backend response code is "200", it means the request is success
-      // you can change this logic by yourself
-      return response.data.status === "200";
+      // when the backend response code is "0000"(default), it means the request is success
+      // to change this logic by yourself, you can modify the `VITE_SERVICE_SUCCESS_CODE` in `.env` file
+      return (
+        String(response.data.code) === import.meta.env.VITE_SERVICE_SUCCESS_CODE
+      );
     },
-    async onBackendFail(_response) {
-      // when the backend response code is not "200", it means the request is fail
-      // for example: the token is expired, refresh token and retry request
+    async onBackendFail(response, instance) {
+      await backEndFail(response, instance, request);
     },
     onError(error) {
-      // when the request is fail, you can show error message
-
-      let message = error.message;
-
-      // show backend error message
-      if (error.code === BACKEND_ERROR_CODE) {
-        message = error.response?.data?.message || message;
-      }
-
-      window.$message?.error(message);
+      handleError(error, request);
     },
     async onRequest(config) {
-      const { headers } = config;
-
-      // set token
-      const token = localStg.get("token");
-      const Authorization = token ? `Bearer ${token}` : null;
-      Object.assign(headers, { Authorization });
+      const Authorization = getAuthorization();
+      Object.assign(config.headers, { Authorization });
 
       return config;
     },
     transformBackendResponse(response) {
-      return response.data.result;
+      console.log(response);
+      return response.data.data;
     },
   },
 );

@@ -1,6 +1,6 @@
 import { Suspense, lazy } from "react";
-
-import { enableStatusRecord, userGenderRecord } from "@/constants/business";
+import dayjs from "dayjs";
+import { enableStatusRecord } from "@/constants/business";
 import { ATG_MAP } from "@/constants/common";
 import {
   TableHeaderOperation,
@@ -9,44 +9,34 @@ import {
   useTableScroll,
 } from "@/features/table";
 import {
-  createAdminUser,
-  deleteAdminUser,
-  fetchGetUserList,
-  updateAdminUser,
-} from "@/service/api";
+  createUser,
+  deleteUser,
+  fetchUserList,
+  updateUser,
+} from "@/service/api/anke-user";
 
 import UserSearch from "./modules/UserSearch";
 
 const UserOperateDrawer = lazy(() => import("./modules/UserOperateDrawer"));
 
-const tagUserGenderMap: Record<Api.SystemManage.UserGender, string> = {
-  1: "processing",
-  2: "error",
-};
-
-const UserManage = () => {
+const AnkeUserManage = () => {
   const { t } = useTranslation();
 
   const { scrollConfig, tableWrapperRef } = useTableScroll();
 
   const nav = useNavigate();
-
   const isMobile = useMobile();
 
   const { columnChecks, data, run, searchProps, setColumnChecks, tableProps } =
     useTable(
       {
-        apiFn: fetchGetUserList,
+        apiFn: fetchUserList,
         apiParams: {
           page: 1,
-          nickName: null,
           size: 10,
-          // if you want to use the searchParams in Form, you need to define the following properties, and the value is null
-          // the value can not be undefined, otherwise the property in Form will not be reactive
-          is_active: null,
+          username: null,
           email: null,
-          userName: null,
-          mobile: null,
+          is_active: null,
         },
         columns: () => [
           {
@@ -59,55 +49,22 @@ const UserManage = () => {
           {
             align: "center",
             dataIndex: "username",
-            key: "userName",
+            key: "username",
             minWidth: 100,
-            title: t("page.manage.user.userName"),
+            title: t("ankeai.users.username"),
           },
           {
             align: "center",
             dataIndex: "id",
             key: "id",
             minWidth: 50,
-            title: "id",
-          },
-          {
-            align: "center",
-            dataIndex: "role_id",
-            key: "userRoles",
-            minWidth: 100,
-            title: t("page.manage.user.userRole"),
-            render: (value, record) => {
-              const roleDescriptionMap = {
-                1: "SuperAdmin",
-                2: "Admin",
-                3: "User",
-              };
-              return (
-                <div className="flex-center gap-8px">
-                  <ATag color={"blue"}>
-                    {
-                      roleDescriptionMap[
-                        value as keyof typeof roleDescriptionMap
-                      ]
-                    }
-                  </ATag>
-                </div>
-              );
-            },
-          },
-
-          {
-            align: "center",
-            dataIndex: "nickname",
-            key: "nickName",
-            minWidth: 100,
-            title: t("page.manage.user.nickName"),
+            title: "ID",
           },
           {
             align: "center",
             dataIndex: "mobile",
             key: "mobile",
-            title: t("page.manage.user.userPhone"),
+            title: t("ankeai.users.mobile"),
             width: 120,
           },
           {
@@ -115,19 +72,57 @@ const UserManage = () => {
             dataIndex: "email",
             key: "email",
             minWidth: 200,
-            title: t("page.manage.user.userEmail"),
+            title: t("ankeai.users.email"),
+          },
+          {
+            align: "center",
+            dataIndex: "membership_level",
+            key: "membership_level",
+            title: t("ankeai.users.membershipLevel"),
+            width: 100,
+            render: (value) => value || "free",
+          },
+          {
+            align: "center",
+            dataIndex: "expire_date",
+            key: "expire_date",
+            title: t("ankeai.users.expireDate"),
+            width: 160,
+            render: (value) =>
+              value ? dayjs(value).format("YYYY-MM-DD HH:mm") : "-",
+          },
+          {
+            align: "center",
+            dataIndex: "token_usage",
+            key: "token_usage",
+            title: t("ankeai.users.tokenUsage"),
+            width: 120,
+          },
+          {
+            align: "center",
+            dataIndex: "quota_limit",
+            key: "quota_limit",
+            title: t("ankeai.users.quotaLimit"),
+            width: 120,
+          },
+          {
+            align: "center",
+            dataIndex: "user_group_name",
+            key: "user_group_name",
+            minWidth: 100,
+            title: t("ankeai.users.userGroup"),
+            render: (value) => value || "-",
           },
           {
             align: "center",
             dataIndex: "is_active",
-            key: "status",
-            render: (_, record) => {
-              // 将boolean值映射为1或2
-              const statusValue = record.is_active ? 1 : 2;
+            key: "is_active",
+            render: (value) => {
+              const statusValue = value ? 1 : 2;
               const label = t(enableStatusRecord[statusValue]);
               return <ATag color={ATG_MAP[statusValue]}>{label}</ATag>;
             },
-            title: t("page.manage.user.userStatus"),
+            title: t("ankeai.users.status"),
             width: 100,
           },
           {
@@ -143,12 +138,6 @@ const UserManage = () => {
                 >
                   {t("common.edit")}
                 </AButton>
-                <AButton
-                  size="small"
-                  onClick={() => nav(`/manage/user/${record.id}`)}
-                >
-                  详情
-                </AButton>
                 <APopconfirm
                   title={t("common.confirmDelete")}
                   onConfirm={() => handleDelete(record.id)}
@@ -160,14 +149,13 @@ const UserManage = () => {
               </div>
             ),
             title: t("common.operate"),
-            width: 195,
+            width: 160,
           },
         ],
       },
       { showQuickJumper: true },
     );
 
-  console.log(data);
   const {
     checkedRowKeys,
     generalPopupOperation,
@@ -176,42 +164,42 @@ const UserManage = () => {
     onBatchDeleted,
     onDeleted,
     rowSelection,
-  } = useTableOperate(data, run, async (res, type) => {
-    if (type === "add") {
-      // add request 调用新增的接口
-      console.log("add type");
-      const result = await createAdminUser(res);
-      console.log(result);
-      console.log(res);
-    } else {
-      // edit request 调用编辑的接口
-      console.log("edit type");
-      const result = await updateAdminUser(res.id, res);
-      console.log("edit result", result);
-      console.log(res);
-    }
-  });
-
-  async function handleBatchDelete() {
-    // request
-    console.log(checkedRowKeys);
-    onBatchDeleted();
-  }
+  } = useTableOperate(
+    data,
+    run,
+    async (res, type) => {
+      if (type === "add") {
+        await createUser(res);
+      } else {
+        await updateUser(res.id, res);
+      }
+    },
+    {
+      // 处理编辑时的表单数据
+      processFormData: (data) => ({
+        ...data,
+        expire_date: data.expire_date ? dayjs(data.expire_date) : null,
+      }),
+      // 处理提交时的数据
+      processSubmitData: (data) => ({
+        ...data,
+        expire_date: data.expire_date ? data.expire_date : null,
+      }),
+    },
+  );
 
   async function handleDelete(id: number) {
-    // request
-    console.log(id);
-
-    // 调用删除接口
-    const result = await deleteAdminUser(id);
-    console.log(result);
-
+    await deleteUser(id);
     onDeleted();
   }
 
-  function edit(id: number) {
-    handleEdit(id);
+  async function handleBatchDelete() {
+    await Promise.all(checkedRowKeys.map((id) => deleteUser(Number(id))));
+    onBatchDeleted();
   }
+
+  const edit = handleEdit;
+
   return (
     <div className="h-full min-h-500px flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
       <ACollapse
@@ -230,7 +218,7 @@ const UserManage = () => {
       <ACard
         className="flex-col-stretch sm:flex-1-hidden card-wrapper"
         ref={tableWrapperRef}
-        title={t("page.manage.user.title")}
+        title={t("ankeai.users.title")}
         variant="borderless"
         extra={
           <TableHeaderOperation
@@ -258,4 +246,4 @@ const UserManage = () => {
   );
 };
 
-export default UserManage;
+export default AnkeUserManage;

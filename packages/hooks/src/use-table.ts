@@ -80,7 +80,7 @@ export default function useHookTable<A extends ApiFn, T, C>(
   const { bool: empty, setBool: setEmpty } = useBoolean();
 
   const searchParams = useRef<Parameters<A>[0]>(
-    apiParams || { current: 1, size: 10 },
+    apiParams || { page: 1, size: 10 },
   );
 
   const [_, setSearchParams] = useSearchParams();
@@ -108,10 +108,8 @@ export default function useHookTable<A extends ApiFn, T, C>(
     setSearchParams(formattedParams as URLSearchParamsInit);
 
     const response = await apiFn(formattedParams);
-    console.log("response", response);
 
     const transformed = transformer(response as Awaited<ReturnType<A>>);
-    console.log("transformed", transformed);
 
     setData(transformed);
 

@@ -337,6 +337,8 @@ declare namespace App {
             yes: string;
           };
         };
+        ankeai: AnkeAI.I18n.Schema["translation"];
+
         datatable: {
           itemCount: string;
         };
@@ -767,7 +769,7 @@ declare namespace App {
   /** Service namespace */
   namespace Service {
     /** Other baseURL key */
-    type OtherBaseURLKey = "demo";
+    type OtherBaseURLKey = "demo" | "app";
 
     interface ServiceConfigItem {
       /** The backend service base url */
@@ -802,12 +804,12 @@ declare namespace App {
 
     /** The demo backend service response data */
     type DemoResponse<T = unknown> = {
-      /** The backend service response message */
-      message: string;
-      /** The backend service response data */
-      result: T;
       /** The backend service response code */
-      status: string;
+      code: string;
+      /** The backend service response data */
+      data: T;
+      /** The backend service response message */
+      msg: string;
     };
   }
 }

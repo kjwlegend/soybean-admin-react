@@ -241,7 +241,7 @@ const page: App.I18n.Schema["translation"]["page"] = {
         userPhone: "请输入手机号",
         userRole: "请选择用户角色",
         userStatus: "请选择用户状态",
-        passwordPlaceholder: '请输入密码',
+        passwordPlaceholder: "请输入密码",
       },
       gender: {
         female: "女",
@@ -255,7 +255,7 @@ const page: App.I18n.Schema["translation"]["page"] = {
       userPhone: "手机号",
       userRole: "用户角色",
       userStatus: "用户状态",
-      userPassword: '密码',
+      userPassword: "密码",
     },
     userDetail: {
       content: `loader 会让网络请求跟懒加载的文件几乎一起发出请求 然后 一边解析懒加载的文件 一边去等待 网络请求

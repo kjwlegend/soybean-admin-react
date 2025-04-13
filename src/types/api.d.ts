@@ -7,8 +7,8 @@ declare namespace Api {
   namespace Common {
     /** common params of paginating */
     interface PaginatingCommonParams {
-      /** current page number */
-      current: number;
+      /** page page number */
+      page: number;
       /** page size */
       size: number;
       /** total count */
@@ -22,7 +22,7 @@ declare namespace Api {
 
     type CommonSearchParams = Pick<
       Common.PaginatingCommonParams,
-      "current" | "size"
+      "page" | "size"
     >;
 
     /**
@@ -105,7 +105,7 @@ declare namespace Api {
   namespace SystemManage {
     type CommonSearchParams = Pick<
       Common.PaginatingCommonParams,
-      "current" | "size"
+      "page" | "size"
     >;
 
     /** role */
@@ -143,13 +143,13 @@ declare namespace Api {
       /** user nick name */
       nickName: string;
       /** user email */
-      userEmail: string;
+      email: string;
       /** user gender */
       is_active: boolean;
       /** user name */
       userName: string;
       /** user phone */
-      userPhone: string;
+      mobile: string;
       /** user role code collection */
       userRoles: string[];
       password: string;
@@ -160,21 +160,16 @@ declare namespace Api {
       nickName: string;
       userName: string;
       password: string;
-      userEmail: string;
+      email: string;
       is_active: boolean;
-      userPhone: string;
+      mobile: string;
     };
 
     /** user search params */
     type UserSearchParams = CommonType.RecordNullable<
       Pick<
         Api.SystemManage.User,
-        | "nickName"
-        | "status"
-        | "userEmail"
-        | "is_active"
-        | "userName"
-        | "userPhone"
+        "nickName" | "status" | "email" | "is_active" | "userName" | "mobile"
       > &
         CommonSearchParams
     >;

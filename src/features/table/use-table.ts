@@ -96,7 +96,7 @@ export function useTable<A extends AntDesign.TableApiFn>(
     // 数据转换器
     transformer: (res) => {
       const {
-        current = 1,
+        page = 1,
         items = [],
         size = 10,
         total: totalNum = 0,
@@ -106,13 +106,13 @@ export function useTable<A extends AntDesign.TableApiFn>(
       const itemsWithIndex = items.map((item, index) => {
         return {
           ...item,
-          index: (current - 1) * size + index + 1,
+          index: (page - 1) * size + index + 1,
         };
       });
 
       return {
         data: itemsWithIndex,
-        pageNum: current,
+        pageNum: page,
         pageSize: size,
         total: totalNum,
       };
@@ -148,8 +148,8 @@ export function useTable<A extends AntDesign.TableApiFn>(
 
     if (res) {
       if (isResetCurrent) {
-        const { current = 1, ...rest } = res;
-        updateSearchParams({ current, ...rest });
+        const { page = 1, ...rest } = res;
+        updateSearchParams({ page, ...rest });
       } else {
         updateSearchParams(res);
       }
@@ -185,6 +185,11 @@ export function useTableOperate<T extends TableData = TableData>(
   data: T[],
   getData: (isResetCurrent?: boolean) => Promise<void>,
   executeResActions: (res: T, operateType: AntDesign.TableOperateType) => void,
+  // 添加可选的数据处理配置
+  options?: {
+    processFormData?: (data: T) => T; // 处理表单数据
+    processSubmitData?: (data: T) => T; // 处理提交数据
+  },
 ) {
   // 抽屉显示状态控制
   const {
@@ -214,24 +219,37 @@ export function useTableOperate<T extends TableData = TableData>(
 
   // 处理编辑操作
   function handleEdit(idOrData: T["id"] | T) {
-    // 判断传入的参数是对象（完整的数据记录）还是 ID
+    let editData: T | undefined;
+
     if (typeof idOrData === "object") {
-      // 如果是对象，直接设置表单值和编辑状态
-      form.setFieldsValue(idOrData);
-      setEditingData(idOrData);
+      editData = idOrData;
     } else {
-      // 如果是 ID，需要从数据列表中查找对应的记录
-      const findItem = data.find((item) => item.id === idOrData);
-      if (findItem) {
-        // 找到后设置表单值和编辑状态
-        form.setFieldsValue(findItem);
-        setEditingData(findItem);
-      }
+      editData = data.find((item) => item.id === idOrData);
     }
-    // 设置操作类型为编辑模式
+
+    if (editData) {
+      // 处理表单数据
+      const processedData = options?.processFormData
+        ? options.processFormData(editData)
+        : editData;
+      form.setFieldsValue(processedData);
+      setEditingData(processedData);
+    }
+
     setOperateType("edit");
-    // 打开抽屉
     openDrawer();
+  }
+
+  async function handleSubmit() {
+    const res = await form.validateFields();
+    // 处理提交数据
+    const processedData = options?.processSubmitData
+      ? options.processSubmitData(res)
+      : res;
+    await executeResActions(processedData, operateType);
+    window.$message?.success(t("common.updateSuccess"));
+    onClose();
+    getData();
   }
 
   // 选中行的key数组
@@ -271,13 +289,13 @@ export function useTableOperate<T extends TableData = TableData>(
   }
 
   // 提交表单
-  async function handleSubmit() {
-    const res = await form.validateFields();
-    await executeResActions(res, operateType);
-    window.$message?.success(t("common.updateSuccess"));
-    onClose();
-    getData();
-  }
+  // async function handleSubmit() {
+  //   const res = await form.validateFields();
+  //   await executeResActions(res, operateType);
+  //   window.$message?.success(t("common.updateSuccess"));
+  //   onClose();
+  //   getData();
+  // }
 
   // 返回表格操作相关的状态和方法
   return {

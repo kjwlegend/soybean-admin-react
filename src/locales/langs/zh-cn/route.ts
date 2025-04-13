@@ -53,6 +53,10 @@ const route: App.I18n.Schema["translation"]["route"] = {
   "iframe-page": "外链页面",
   notFound: "页面不存在",
   root: "首页",
+  // ankeai
+  "(base)_anke-user": "用户管理",
+  "(base)_anke-agents": "代理管理",
+  "(base)_anke-user-groups": "用户组管理",
 };
 
 export default route;

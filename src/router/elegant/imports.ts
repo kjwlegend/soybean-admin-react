@@ -18,6 +18,9 @@ export const layouts: Record<string, () => Promise<any>> = {
 
 export const pages: Record<string, () => Promise<any>> = {
 "(base)_about": () => import("@/pages/(base)/about/index.tsx"),
+"(base)_anke-agents": () => import("@/pages/(base)/anke-agents/index.tsx"),
+"(base)_anke-user-groups": () => import("@/pages/(base)/anke-user-groups/index.tsx"),
+"(base)_anke-user": () => import("@/pages/(base)/anke-user/index.tsx"),
 "(base)_function_event-bus": () => import("@/pages/(base)/function/event-bus/index.tsx"),
 "(base)_function_hide-child": () => import("@/pages/(base)/function/hide-child/index.tsx"),
 "(base)_function_hide-child_one": () => import("@/pages/(base)/function/hide-child/one/index.tsx"),

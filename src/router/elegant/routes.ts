@@ -30,8 +30,27 @@ export const generatedRoutes: ElegantConstRoute[] = [
               i18nKey: 'route.(base)_about',
               icon: 'fluent:book-information-24-regular',
               order: 9,
+              hideInMenu: true,
               title: 'about'
             }
+          },
+          {
+            matchedFiles: [null, '/src/pages/(base)/anke-agents/index.tsx', null, null],
+            name: '(base)_anke-agents',
+            path: '/anke-agents',
+            handle: { i18nKey: 'route.(base)_anke-agents', title: '(base)_anke-agents' }
+          },
+          {
+            matchedFiles: [null, '/src/pages/(base)/anke-user/index.tsx', null, null],
+            name: '(base)_anke-user',
+            path: '/anke-user',
+            handle: { i18nKey: 'route.(base)_anke-user', title: '(base)_anke-user' }
+          },
+          {
+            matchedFiles: [null, '/src/pages/(base)/anke-user-groups/index.tsx', null, null],
+            name: '(base)_anke-user-groups',
+            path: '/anke-user-groups',
+            handle: { i18nKey: 'route.(base)_anke-user-groups', title: '(base)_anke-user-groups' }
           },
           {
             matchedFiles: [null, '/src/pages/(base)/function/index.tsx', null, null],

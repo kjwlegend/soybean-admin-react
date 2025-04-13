@@ -27,7 +27,7 @@ const Role = () => {
     useTable({
       apiFn: fetchGetRoleList,
       apiParams: {
-        current: 1,
+        page: 1,
         id: undefined,
         description: undefined,
         size: 10,

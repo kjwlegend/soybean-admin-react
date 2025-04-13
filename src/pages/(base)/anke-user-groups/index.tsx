@@ -1,45 +1,41 @@
 import { Suspense, lazy } from "react";
-import { useTranslation } from "react-i18next";
-import { Button, Card, Collapse, Popconfirm, Table, Tag } from "antd";
-import { useNavigate } from "react-router-dom";
-
-import { enableStatusRecord } from "@/constants/business";
-import { ATG_MAP } from "@/constants/common";
+import dayjs from "dayjs";
 import {
   TableHeaderOperation,
   useTable,
   useTableOperate,
   useTableScroll,
 } from "@/features/table";
-import { fetchGetConfigList } from "@/service/api";
+import {
+  createUserGroup,
+  deleteUserGroup,
+  fetchUserGroupList,
+  updateUserGroup,
+} from "@/service/api/anke-user";
 
-import ConfigSearch from "./modules/ConfigSearch";
+import UserGroupSearch from "./modules/UserGroupSearch";
 
-const ConfigOperateDrawer = lazy(() => import("./modules/ConfigOperateDrawer"));
+const UserGroupOperateDrawer = lazy(
+  () => import("./modules/UserGroupOperateDrawer"),
+);
 
-// 为了简化代码，将 Ant Design 组件别名化
-const AButton = Button;
-const ACard = Card;
-const ACollapse = Collapse;
-const APopconfirm = Popconfirm;
-const ATable = Table;
-const ATag = Tag;
-
-const ConfigManage = () => {
+const AnkeUserGroupManage = () => {
   const { t } = useTranslation();
 
   const { scrollConfig, tableWrapperRef } = useTableScroll();
 
+  const nav = useNavigate();
+  const isMobile = useMobile();
+
   const { columnChecks, data, run, searchProps, setColumnChecks, tableProps } =
     useTable(
       {
-        apiFn: fetchGetConfigList,
+        apiFn: fetchUserGroupList,
         apiParams: {
           page: 1,
           size: 10,
-          key: null,
-          value: null,
-          status: null,
+          name: undefined,
+          description: undefined,
         },
         columns: () => [
           {
@@ -51,24 +47,62 @@ const ConfigManage = () => {
           },
           {
             align: "center",
+            dataIndex: "name",
+            key: "name",
+            minWidth: 50,
+            title: t("ankeai.userGroups.name"),
+          },
+          {
+            align: "center",
+            dataIndex: "id",
+            key: "id",
+            width: 50,
+            title: "ID",
+          },
+          {
+            align: "center",
             dataIndex: "description",
             key: "description",
             minWidth: 200,
-            title: t("page.manage.config.description"),
+            title: t("ankeai.userGroups.description"),
+            render: (value) => value || "-",
           },
           {
             align: "center",
-            dataIndex: "key", // 修改这里，使用与后端返回数据一致的属性名
-            key: "key", // key 应该与 dataIndex 一致
-            title: t("page.manage.config.key"),
-            minWidth: 100,
+            dataIndex: "agents",
+            key: "agents",
+            title: t("ankeai.userGroups.agents"),
+            width: 200,
+            render: (value) =>
+              Array.isArray(value) && value.length > 0 ? (
+                <div className="flex flex-wrap gap-1">
+                  {value.map((agent) => (
+                    <ATag key={agent.id} color="blue">
+                      {agent.name}
+                    </ATag>
+                  ))}
+                </div>
+              ) : (
+                "-"
+              ),
           },
           {
             align: "center",
-            dataIndex: "value",
-            key: "value",
-            minWidth: 200,
-            title: t("page.manage.config.value"),
+            dataIndex: "created_at",
+            key: "created_at",
+            title: t("ankeai.createdAt"),
+            width: 160,
+            render: (value) =>
+              value ? dayjs(value).format("YYYY-MM-DD HH:mm") : "-",
+          },
+          {
+            align: "center",
+            dataIndex: "updated_at",
+            key: "updated_at",
+            title: t("ankeai.updatedAt"),
+            width: 160,
+            render: (value) =>
+              value ? dayjs(value).format("YYYY-MM-DD HH:mm") : "-",
           },
           {
             align: "center",
@@ -109,42 +143,43 @@ const ConfigManage = () => {
     onBatchDeleted,
     onDeleted,
     rowSelection,
-  } = useTableOperate(data, run, async (res, type) => {
-    if (type === "add") {
-      // add request 调用新增的接口
-      console.log(res);
-    } else {
-      // edit request 调用编辑的接口
-      console.log(res);
-    }
-  });
+  } = useTableOperate(
+    data,
+    run,
+    async (res, type) => {
+      if (type === "add") {
+        await createUserGroup(res);
+      } else {
+        await updateUserGroup(res.id, res);
+      }
+    },
+    {
+      processFormData: (data) => data,
+      processSubmitData: (data) => data,
+    },
+  );
 
-  async function handleBatchDelete() {
-    // request
-    console.log(checkedRowKeys);
-    onBatchDeleted();
-  }
-
-  function handleDelete(id: number) {
-    // request
-    console.log(id);
-
+  async function handleDelete(id: number) {
+    await deleteUserGroup(id);
     onDeleted();
   }
 
-  function edit(id: number) {
-    handleEdit(id);
+  async function handleBatchDelete() {
+    await Promise.all(checkedRowKeys.map((id) => deleteUserGroup(Number(id))));
+    onBatchDeleted();
   }
+
+  const edit = handleEdit;
 
   return (
     <div className="h-full min-h-500px flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
       <ACollapse
         bordered={false}
         className="card-wrapper"
-        defaultActiveKey={1}
+        defaultActiveKey={isMobile ? undefined : "1"}
         items={[
           {
-            children: <ConfigSearch {...searchProps} />,
+            children: <UserGroupSearch {...searchProps} />,
             key: "1",
             label: t("common.search"),
           },
@@ -154,7 +189,7 @@ const ConfigManage = () => {
       <ACard
         className="flex-col-stretch sm:flex-1-hidden card-wrapper"
         ref={tableWrapperRef}
-        title={t("page.manage.config.title")}
+        title={t("ankeai.userGroups.title")}
         variant="borderless"
         extra={
           <TableHeaderOperation
@@ -175,11 +210,11 @@ const ConfigManage = () => {
           {...tableProps}
         />
         <Suspense>
-          <ConfigOperateDrawer {...generalPopupOperation} />
+          <UserGroupOperateDrawer {...generalPopupOperation} />
         </Suspense>
       </ACard>
     </div>
   );
 };
 
-export default ConfigManage;
+export default AnkeUserGroupManage;
