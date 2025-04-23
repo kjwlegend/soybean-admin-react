@@ -15,18 +15,14 @@ declare namespace AnkeAI {
       invalid: string;
       required: string;
     };
+    type TranslationValue = string | { [key: string]: TranslationValue };
 
     type Schema = {
       /** 语言 */
       lang: string;
       /** 语言名称 */
-
       translation: {
-        [key: string]:
-          | string
-          | {
-              [key: string]: string;
-            };
+        [key: string]: TranslationValue;
       };
     };
   }

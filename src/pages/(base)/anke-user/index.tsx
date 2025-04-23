@@ -34,9 +34,9 @@ const AnkeUserManage = () => {
         apiParams: {
           page: 1,
           size: 10,
-          username: null,
-          email: null,
-          is_active: null,
+          username: undefined,
+          email: undefined,
+          is_active: undefined,
         },
         columns: () => [
           {

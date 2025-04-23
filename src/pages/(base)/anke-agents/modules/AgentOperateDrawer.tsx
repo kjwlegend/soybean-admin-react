@@ -81,13 +81,24 @@ const AgentOperateDrawer: FC<Page.OperateDrawerProps> = ({
           name="name"
           rules={rules.name}
         >
-          <Input placeholder={t("ankeai.agents.form.name")} />
+          <Input placeholder={t("ankeai.form.name")} />
         </Form.Item>
 
         <Form.Item label={t("ankeai.agents.description")} name="description">
-          <Input.TextArea
-            placeholder={t("ankeai.agents.form.description")}
-            rows={4}
+          <Input.TextArea placeholder={t("ankeai.form.description")} rows={4} />
+        </Form.Item>
+
+        <Form.Item
+          label={t("ankeai.agents.type")}
+          name="type"
+          initialValue={"chat"}
+        >
+          <Select
+            options={[
+              { label: t("ankeai.agents.chat"), value: "chat" },
+              { label: t("ankeai.agents.workflow"), value: "workflow" },
+            ]}
+            placeholder={t("ankeai.form.type")}
           />
         </Form.Item>
 
@@ -96,7 +107,7 @@ const AgentOperateDrawer: FC<Page.OperateDrawerProps> = ({
           name="api_key"
           rules={operateType === "add" ? rules.api_key : []}
         >
-          <Input.Password placeholder={t("ankeai.agents.form.apiKey")} />
+          <Input.Password placeholder={t("ankeai.form.apiKey")} />
         </Form.Item>
 
         <Form.Item
@@ -107,13 +118,13 @@ const AgentOperateDrawer: FC<Page.OperateDrawerProps> = ({
         >
           <Select
             options={[
-              { label: t("ankeai.agents.status.active"), value: "active" },
+              { label: t("ankeai.status.active"), value: "active" },
               {
-                label: t("ankeai.agents.status.inactive"),
+                label: t("ankeai.status.inactive"),
                 value: "inactive",
               },
             ]}
-            placeholder={t("ankeai.agents.form.status")}
+            placeholder={t("ankeai.form.status")}
           />
         </Form.Item>
 
@@ -121,19 +132,9 @@ const AgentOperateDrawer: FC<Page.OperateDrawerProps> = ({
           <Select
             mode="multiple"
             options={userGroupOptions}
-            placeholder={t("ankeai.agents.form.userGroups")}
+            placeholder={t("ankeai.form.userGroups")}
           />
         </Form.Item>
-
-        {operateType === "edit" && (
-          <Form.Item
-            label={t("ankeai.agents.forceUpdate")}
-            name="force_update"
-            valuePropName="checked"
-          >
-            <Switch />
-          </Form.Item>
-        )}
       </Form>
     </Drawer>
   );

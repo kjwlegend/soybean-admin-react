@@ -8,8 +8,10 @@ const ankeAI: AnkeAI.I18n.Schema = {
     userPassword: "密码",
     createdAt: "创建时间",
     updatedAt: "更新时间",
+    view: "查看",
 
     users: {
+      title: "用户管理",
       username: "用户名",
       phone: "手机号",
       role: "用户角色",
@@ -26,6 +28,10 @@ const ankeAI: AnkeAI.I18n.Schema = {
       updateTime: "更新时间",
       operation: "操作",
     },
+    status: {
+      active: "启用",
+      inactive: "禁用",
+    },
 
     agents: {
       name: "名称",
@@ -34,6 +40,8 @@ const ankeAI: AnkeAI.I18n.Schema = {
       externalId: "外部ID",
       status: "状态",
       metadata: "元数据",
+      type: "类型",
+      workflow: "工作流",
       lastSynced: "最后同步时间",
       userGroups: "用户组",
       createTime: "创建时间",
@@ -57,12 +65,35 @@ const ankeAI: AnkeAI.I18n.Schema = {
       operation: "操作",
       agents: "可用智能体",
     },
+    conversations: {
+      title: "对话管理",
+      list: "对话列表",
+      detail: "对话详情",
+      id: "会话系统id",
+      name: "名称",
+      description: "描述",
+      type: "类型",
+      status: "状态",
+      user: "用户",
+      agent: "智能体",
+      workflow: "工作流",
+      executionTime: "执行时间",
+      tokenUsage: "已使用token",
+
+      totalSteps: "总步骤",
+      lastSynced: "最后同步时间",
+      isArchived: "是否归档",
+      createdAt: "创建时间",
+      updatedAt: "更新时间",
+      operation: "操作",
+    },
     form: {
       name: "请输入名称",
       description: "请输入描述",
       apiKey: "请输入API密钥",
       status: "请选择状态",
       userGroups: "请选择用户组",
+      agents: "请选择智能体",
     },
   },
 };

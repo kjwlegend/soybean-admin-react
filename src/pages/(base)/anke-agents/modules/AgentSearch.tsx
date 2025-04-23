@@ -14,23 +14,22 @@ const AgentSearch: FC<Page.SearchProps> = ({
   return (
     <Form form={form} initialValues={searchParams} layout="inline">
       <Form.Item name="name" label={t("ankeai.agents.name")}>
-        <Input placeholder={t("ankeai.agents.form.name")} />
+        <Input placeholder={t("ankeai.form.name")} />
       </Form.Item>
       <Form.Item name="description" label={t("ankeai.agents.description")}>
-        <Input placeholder={t("ankeai.agents.form.description")} />
+        <Input placeholder={t("ankeai.form.description")} />
       </Form.Item>
       <Form.Item name="status" label={t("ankeai.agents.status")}>
         <Select
           allowClear
           options={[
-            { label: t("ankeai.agents.status.active"), value: "active" },
+            { label: t("ankeai.status.active"), value: "active" },
             {
-              label: t("ankeai.agents.status.inactive"),
+              label: t("ankeai.status.inactive"),
               value: "inactive",
             },
-            { label: t("ankeai.agents.status.error"), value: "error" },
           ]}
-          placeholder={t("ankeai.agents.form.status")}
+          placeholder={t("ankeai.form.status")}
         />
       </Form.Item>
 

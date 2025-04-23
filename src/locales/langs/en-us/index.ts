@@ -38,7 +38,7 @@ const local: App.I18n.Schema["translation"] = {
   system: {
     errorReason: "Cause Error",
     reload: "Reload Page",
-    title: "SoybeanAdmin",
+    title: "AnkeAI Admin",
     updateCancel: "Later",
     updateConfirm: "Refresh immediately",
     updateContent:

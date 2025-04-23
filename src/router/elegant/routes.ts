@@ -19,26 +19,210 @@ export const generatedRoutes: ElegantConstRoute[] = [
     handle: { i18nKey: 'route.root', title: 'root', constant: true },
     children: [
       {
+        matchedFiles: [null, null, null, null],
+        name: '(backup)',
+        children: [
+          {
+            matchedFiles: [null, '/src/pages/(backup)/about/index.tsx', null, null],
+            name: '(backup)_about',
+            path: '/about',
+            handle: { i18nKey: 'route.(backup)_about', title: '(backup)_about' }
+          },
+          {
+            matchedFiles: [null, '/src/pages/(backup)/function/index.tsx', null, null],
+            name: '(backup)_function',
+            path: '/function',
+            handle: { i18nKey: 'route.(backup)_function', title: '(backup)_function' },
+            children: [
+              {
+                matchedFiles: [null, '/src/pages/(backup)/function/event-bus/index.tsx', null, null],
+                name: '(backup)_function_event-bus',
+                path: '/function/event-bus',
+                handle: { i18nKey: 'route.(backup)_function_event-bus', title: '(backup)_function_event-bus' }
+              },
+              {
+                matchedFiles: [null, '/src/pages/(backup)/function/hide-child/index.tsx', null, null],
+                name: '(backup)_function_hide-child',
+                path: '/function/hide-child',
+                handle: { i18nKey: 'route.(backup)_function_hide-child', title: '(backup)_function_hide-child' },
+                children: [
+                  {
+                    matchedFiles: [null, '/src/pages/(backup)/function/hide-child/one/index.tsx', null, null],
+                    name: '(backup)_function_hide-child_one',
+                    path: '/function/hide-child/one',
+                    handle: {
+                      i18nKey: 'route.(backup)_function_hide-child_one',
+                      title: '(backup)_function_hide-child_one'
+                    }
+                  },
+                  {
+                    matchedFiles: [null, '/src/pages/(backup)/function/hide-child/three/index.tsx', null, null],
+                    name: '(backup)_function_hide-child_three',
+                    path: '/function/hide-child/three',
+                    handle: {
+                      i18nKey: 'route.(backup)_function_hide-child_three',
+                      title: '(backup)_function_hide-child_three'
+                    }
+                  },
+                  {
+                    matchedFiles: [null, '/src/pages/(backup)/function/hide-child/two/index.tsx', null, null],
+                    name: '(backup)_function_hide-child_two',
+                    path: '/function/hide-child/two',
+                    handle: {
+                      i18nKey: 'route.(backup)_function_hide-child_two',
+                      title: '(backup)_function_hide-child_two'
+                    }
+                  }
+                ]
+              },
+              {
+                matchedFiles: [null, '/src/pages/(backup)/function/multi-tab/index.tsx', null, null],
+                name: '(backup)_function_multi-tab',
+                path: '/function/multi-tab',
+                handle: { i18nKey: 'route.(backup)_function_multi-tab', title: '(backup)_function_multi-tab' }
+              },
+              {
+                matchedFiles: [null, '/src/pages/(backup)/function/request/index.tsx', null, null],
+                name: '(backup)_function_request',
+                path: '/function/request',
+                handle: { i18nKey: 'route.(backup)_function_request', title: '(backup)_function_request' }
+              },
+              {
+                matchedFiles: [null, '/src/pages/(backup)/function/super-page/index.tsx', null, null],
+                name: '(backup)_function_super-page',
+                path: '/function/super-page',
+                handle: { i18nKey: 'route.(backup)_function_super-page', title: '(backup)_function_super-page' }
+              },
+              {
+                matchedFiles: [null, '/src/pages/(backup)/function/tab/index.tsx', null, null],
+                name: '(backup)_function_tab',
+                path: '/function/tab',
+                handle: { i18nKey: 'route.(backup)_function_tab', title: '(backup)_function_tab' }
+              },
+              {
+                matchedFiles: [null, '/src/pages/(backup)/function/toggle-auth/index.tsx', null, null],
+                name: '(backup)_function_toggle-auth',
+                path: '/function/toggle-auth',
+                handle: { i18nKey: 'route.(backup)_function_toggle-auth', title: '(backup)_function_toggle-auth' }
+              },
+              {
+                matchedFiles: [null, '/src/pages/(backup)/function/use-request/index.tsx', null, null],
+                name: '(backup)_function_use-request',
+                path: '/function/use-request',
+                handle: { i18nKey: 'route.(backup)_function_use-request', title: '(backup)_function_use-request' }
+              }
+            ]
+          },
+          {
+            matchedFiles: [null, '/src/pages/(backup)/multi-menu/index.tsx', null, null],
+            name: '(backup)_multi-menu',
+            path: '/multi-menu',
+            handle: { i18nKey: 'route.(backup)_multi-menu', title: '(backup)_multi-menu' },
+            children: [
+              {
+                matchedFiles: [null, '/src/pages/(backup)/multi-menu/first/index.tsx', null, null],
+                name: '(backup)_multi-menu_first',
+                path: '/multi-menu/first',
+                handle: { i18nKey: 'route.(backup)_multi-menu_first', title: '(backup)_multi-menu_first' },
+                children: [
+                  {
+                    matchedFiles: [null, '/src/pages/(backup)/multi-menu/first/child/index.tsx', null, null],
+                    name: '(backup)_multi-menu_first_child',
+                    path: '/multi-menu/first/child',
+                    handle: {
+                      i18nKey: 'route.(backup)_multi-menu_first_child',
+                      title: '(backup)_multi-menu_first_child'
+                    }
+                  }
+                ]
+              },
+              {
+                matchedFiles: [null, '/src/pages/(backup)/multi-menu/second/index.tsx', null, null],
+                name: '(backup)_multi-menu_second',
+                path: '/multi-menu/second',
+                handle: { i18nKey: 'route.(backup)_multi-menu_second', title: '(backup)_multi-menu_second' },
+                children: [
+                  {
+                    matchedFiles: [null, '/src/pages/(backup)/multi-menu/second/child/index.tsx', null, null],
+                    name: '(backup)_multi-menu_second_child',
+                    path: '/multi-menu/second/child',
+                    handle: {
+                      i18nKey: 'route.(backup)_multi-menu_second_child',
+                      title: '(backup)_multi-menu_second_child'
+                    },
+                    children: [
+                      {
+                        matchedFiles: [null, '/src/pages/(backup)/multi-menu/second/child/home/index.tsx', null, null],
+                        name: '(backup)_multi-menu_second_child_home',
+                        path: '/multi-menu/second/child/home',
+                        handle: {
+                          i18nKey: 'route.(backup)_multi-menu_second_child_home',
+                          title: '(backup)_multi-menu_second_child_home'
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            matchedFiles: [null, '/src/pages/(backup)/projects/index.tsx', null, null],
+            name: '(backup)_projects',
+            path: '/projects',
+            handle: { i18nKey: 'route.(backup)_projects', title: '(backup)_projects' },
+            children: [
+              {
+                matchedFiles: [null, '/src/pages/(backup)/projects/[pid]/index.tsx', null, null],
+                name: '(backup)_projects_[pid]',
+                path: '/projects/:pid',
+                handle: { i18nKey: 'route.(backup)_projects_[pid]', title: '(backup)_projects_[pid]' },
+                children: [
+                  {
+                    matchedFiles: [null, '/src/pages/(backup)/projects/[pid]/edit/index.tsx', null, null],
+                    name: '(backup)_projects_[pid]_edit',
+                    path: '/projects/:pid/edit',
+                    handle: { i18nKey: 'route.(backup)_projects_[pid]_edit', title: '(backup)_projects_[pid]_edit' },
+                    children: [
+                      {
+                        matchedFiles: [null, '/src/pages/(backup)/projects/[pid]/edit/[id].tsx', null, null],
+                        name: '(backup)_projects_[pid]_edit_[id]',
+                        path: '/projects/:pid/edit/:id',
+                        handle: {
+                          i18nKey: 'route.(backup)_projects_[pid]_edit_[id]',
+                          title: '(backup)_projects_[pid]_edit_[id]'
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            matchedFiles: [null, '/src/pages/(backup)/user-center/index.tsx', null, null],
+            name: '(backup)_user-center',
+            path: '/user-center',
+            handle: { i18nKey: 'route.(backup)_user-center', title: '(backup)_user-center' }
+          }
+        ],
+        path: null
+      },
+      {
         matchedFiles: ['(base)', null, null, null],
         name: '(base)',
         children: [
-          {
-            matchedFiles: [null, '/src/pages/(base)/about/index.tsx', null, null],
-            name: '(base)_about',
-            path: '/about',
-            handle: {
-              i18nKey: 'route.(base)_about',
-              icon: 'fluent:book-information-24-regular',
-              order: 9,
-              hideInMenu: true,
-              title: 'about'
-            }
-          },
           {
             matchedFiles: [null, '/src/pages/(base)/anke-agents/index.tsx', null, null],
             name: '(base)_anke-agents',
             path: '/anke-agents',
             handle: { i18nKey: 'route.(base)_anke-agents', title: '(base)_anke-agents' }
+          },
+          {
+            matchedFiles: [null, '/src/pages/(base)/anke-conversation/index.tsx', null, null],
+            name: '(base)_anke-conversation',
+            path: '/anke-conversation',
+            handle: { i18nKey: 'route.(base)_anke-conversation', title: '(base)_anke-conversation' }
           },
           {
             matchedFiles: [null, '/src/pages/(base)/anke-user/index.tsx', null, null],
@@ -51,140 +235,6 @@ export const generatedRoutes: ElegantConstRoute[] = [
             name: '(base)_anke-user-groups',
             path: '/anke-user-groups',
             handle: { i18nKey: 'route.(base)_anke-user-groups', title: '(base)_anke-user-groups' }
-          },
-          {
-            matchedFiles: [null, '/src/pages/(base)/function/index.tsx', null, null],
-            name: '(base)_function',
-            path: '/function',
-            handle: {
-              i18nKey: 'route.(base)_function',
-              icon: 'icon-park-outline:all-application',
-              order: 6,
-              title: 'function'
-            },
-            children: [
-              {
-                matchedFiles: [null, '/src/pages/(base)/function/event-bus/index.tsx', null, null],
-                name: '(base)_function_event-bus',
-                path: '/function/event-bus',
-                handle: {
-                  i18nKey: 'route.(base)_function_event-bus',
-                  icon: 'ant-design:send-outlined',
-                  title: 'function_event-bus'
-                }
-              },
-              {
-                matchedFiles: [null, '/src/pages/(base)/function/hide-child/index.tsx', null, null],
-                name: '(base)_function_hide-child',
-                path: '/function/hide-child',
-                handle: {
-                  i18nKey: 'route.(base)_function_hide-child',
-                  icon: 'material-symbols:filter-list-off',
-                  order: 2,
-                  title: 'function_hide-child'
-                },
-                children: [
-                  {
-                    matchedFiles: [null, '/src/pages/(base)/function/hide-child/one/index.tsx', null, null],
-                    name: '(base)_function_hide-child_one',
-                    path: '/function/hide-child/one',
-                    handle: {
-                      activeMenu: '/function/hide-child',
-                      hideInMenu: true,
-                      i18nKey: 'route.(base)_function_hide-child_one',
-                      title: 'function_hide-child_one'
-                    }
-                  },
-                  {
-                    matchedFiles: [null, '/src/pages/(base)/function/hide-child/three/index.tsx', null, null],
-                    name: '(base)_function_hide-child_three',
-                    path: '/function/hide-child/three',
-                    handle: {
-                      activeMenu: '/function/hide-child',
-                      hideInMenu: true,
-                      i18nKey: 'route.(base)_function_hide-child_three',
-                      title: 'function_hide-child_three'
-                    }
-                  },
-                  {
-                    matchedFiles: [null, '/src/pages/(base)/function/hide-child/two/index.tsx', null, null],
-                    name: '(base)_function_hide-child_two',
-                    path: '/function/hide-child/two',
-                    handle: {
-                      activeMenu: '/function/hide-child',
-                      hideInMenu: true,
-                      i18nKey: 'route.(base)_function_hide-child_two',
-                      title: 'function_hide-child_two'
-                    }
-                  }
-                ]
-              },
-              {
-                matchedFiles: [null, '/src/pages/(base)/function/multi-tab/index.tsx', null, null],
-                name: '(base)_function_multi-tab',
-                path: '/function/multi-tab',
-                handle: {
-                  activeMenu: '/function/tab',
-                  hideInMenu: true,
-                  i18nKey: 'route.(base)_function_multi-tab',
-                  icon: 'ic:round-tab',
-                  multiTab: true,
-                  title: 'function_multi-tab'
-                }
-              },
-              {
-                matchedFiles: [null, '/src/pages/(base)/function/request/index.tsx', null, null],
-                name: '(base)_function_request',
-                path: '/function/request',
-                handle: {
-                  i18nKey: 'route.(base)_function_request',
-                  icon: 'carbon:network-overlay',
-                  order: 3,
-                  title: 'function_request'
-                }
-              },
-              {
-                matchedFiles: [null, '/src/pages/(base)/function/super-page/index.tsx', null, null],
-                name: '(base)_function_super-page',
-                path: '/function/super-page',
-                handle: {
-                  i18nKey: 'route.(base)_function_super-page',
-                  icon: 'ic:round-supervisor-account',
-                  order: 5,
-                  roles: ['R_SUPER'],
-                  title: 'function_super-page'
-                }
-              },
-              {
-                matchedFiles: [null, '/src/pages/(base)/function/tab/index.tsx', null, null],
-                name: '(base)_function_tab',
-                path: '/function/tab',
-                handle: {
-                  i18nKey: 'route.(base)_function_tab',
-                  icon: 'ic:round-tab',
-                  keepAlive: true,
-                  order: 1,
-                  title: 'function_tab'
-                }
-              },
-              {
-                matchedFiles: [null, '/src/pages/(base)/function/toggle-auth/index.tsx', null, null],
-                name: '(base)_function_toggle-auth',
-                path: '/function/toggle-auth',
-                handle: {
-                  i18nKey: 'route.(base)_function_toggle-auth',
-                  icon: 'ic:round-construction',
-                  order: 4,
-                  title: 'function_toggle-auth'
-                }
-              },
-              {
-                matchedFiles: [null, '/src/pages/(base)/function/use-request/index.tsx', null, null],
-                name: '(base)_function_use-request',
-                path: '/function/use-request',
-                handle: { i18nKey: 'route.(base)_function_use-request', title: '(base)_function_use-request' }
-              }
-            ]
           },
           {
             matchedFiles: [null, '/src/pages/(base)/home/index.tsx', null, null],
@@ -261,112 +311,6 @@ export const generatedRoutes: ElegantConstRoute[] = [
                 ]
               }
             ]
-          },
-          {
-            matchedFiles: [null, '/src/pages/(base)/multi-menu/index.tsx', null, null],
-            name: '(base)_multi-menu',
-            path: '/multi-menu',
-            handle: { constant: true, i18nKey: 'route.(base)_multi-menu', order: 5, title: 'multi-menu' },
-            children: [
-              {
-                matchedFiles: [null, '/src/pages/(base)/multi-menu/first/index.tsx', null, null],
-                name: '(base)_multi-menu_first',
-                path: '/multi-menu/first',
-                handle: { constant: true, i18nKey: 'route.(base)_multi-menu_first', title: 'multi-menu_first' },
-                children: [
-                  {
-                    matchedFiles: [null, '/src/pages/(base)/multi-menu/first/child/index.tsx', null, null],
-                    name: '(base)_multi-menu_first_child',
-                    path: '/multi-menu/first/child',
-                    handle: {
-                      constant: true,
-                      i18nKey: 'route.(base)_multi-menu_first_child',
-                      title: 'multi-menu_first_child'
-                    }
-                  }
-                ]
-              },
-              {
-                matchedFiles: [null, '/src/pages/(base)/multi-menu/second/index.tsx', null, null],
-                name: '(base)_multi-menu_second',
-                path: '/multi-menu/second',
-                handle: { i18nKey: 'route.(base)_multi-menu_second', title: '(base)_multi-menu_second' },
-                children: [
-                  {
-                    matchedFiles: [null, '/src/pages/(base)/multi-menu/second/child/index.tsx', null, null],
-                    name: '(base)_multi-menu_second_child',
-                    path: '/multi-menu/second/child',
-                    handle: {
-                      i18nKey: 'route.(base)_multi-menu_second_child',
-                      title: '(base)_multi-menu_second_child'
-                    },
-                    children: [
-                      {
-                        matchedFiles: [null, '/src/pages/(base)/multi-menu/second/child/home/index.tsx', null, null],
-                        name: '(base)_multi-menu_second_child_home',
-                        path: '/multi-menu/second/child/home',
-                        handle: {
-                          i18nKey: 'route.(base)_multi-menu_second_child_home',
-                          title: '(base)_multi-menu_second_child_home'
-                        }
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            matchedFiles: [null, '/src/pages/(base)/projects/index.tsx', null, null],
-            name: '(base)_projects',
-            path: '/projects',
-            handle: {
-              i18nKey: 'route.(base)_projects',
-              icon: 'hugeicons:align-box-top-center',
-              order: 7,
-              title: '(base)_projects'
-            },
-            children: [
-              {
-                matchedFiles: [null, '/src/pages/(base)/projects/[pid]/index.tsx', null, null],
-                name: '(base)_projects_[pid]',
-                path: '/projects/:pid',
-                handle: {
-                  i18nKey: 'route.(base)_projects_[pid]',
-                  icon: 'material-symbols-light:attachment',
-                  title: '(base)_projects_[pid]'
-                },
-                children: [
-                  {
-                    matchedFiles: [null, '/src/pages/(base)/projects/[pid]/edit/index.tsx', null, null],
-                    name: '(base)_projects_[pid]_edit',
-                    path: '/projects/:pid/edit',
-                    handle: {
-                      i18nKey: 'route.(base)_projects_[pid]_edit',
-                      icon: 'material-symbols-light:assistant-on-hub-outline',
-                      title: '(base)_projects_[pid]_edit'
-                    },
-                    children: [
-                      {
-                        matchedFiles: [null, '/src/pages/(base)/projects/[pid]/edit/[id].tsx', null, null],
-                        name: '(base)_projects_[pid]_edit_[id]',
-                        path: '/projects/:pid/edit/:id',
-                        handle: {
-                          i18nKey: 'route.(base)_projects_[pid]_edit_[id]',
-                          title: '(base)_projects_[pid]_edit_[id]'
-                        }
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            matchedFiles: [null, '/src/pages/(base)/user-center/index.tsx', null, null],
-            name: '(base)_user-center',
-            path: '/user-center',
-            handle: { hideInMenu: true, i18nKey: 'route.(base)_user-center', title: 'user-center' }
           }
         ],
         path: null

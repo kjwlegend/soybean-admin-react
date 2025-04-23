@@ -253,12 +253,19 @@ declare namespace Api {
     };
 
     /** 系统配置项 */
-    type ConfigItem = Common.CommonRecord<{
+    // Remove Common.CommonRecord wrapper and update fields
+    type ConfigItem = {
       id: number;
       key: string;
       value: string;
       description: string;
-    }>;
+      category: string;
+      field_type: "text" | "textarea" | "image"; // Make field_type more specific
+      created_at: string; // Add created_at
+      updated_at: string; // Add updated_at
+      is_system: boolean; // Add is_system
+      status: Common.EnableStatus | null; // Keep status if it exists, otherwise remove
+    };
     /** 系统配置搜索参数 */
     type ConfigSearchParams = CommonType.RecordNullable<
       Pick<ConfigItem, "key" | "value" | "status"> & CommonSearchParams
@@ -266,5 +273,25 @@ declare namespace Api {
 
     /** 系统配置列表 */
     type ConfigList = Common.PaginatingQueryRecord<ConfigItem>;
+    type File = {
+      id: number;
+      name: string;
+      url: string;
+      path: string;
+      exention: string;
+      size: number;
+      type: string;
+      created_at: string;
+    };
+    type FileList = {
+      size: number;
+      total: number;
+      items: File[];
+    };
+
+    type UploadFileParams = {
+      file: File;
+      onUploadProgress?: (progressEvent: ProgressEvent) => void;
+    };
   }
 }

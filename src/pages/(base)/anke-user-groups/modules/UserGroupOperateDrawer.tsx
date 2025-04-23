@@ -71,28 +71,22 @@ const UserGroupOperateDrawer: FC<Page.OperateDrawerProps> = ({
           name="name"
           rules={rules.name}
         >
-          <Input placeholder={t("ankeai.userGroups.namePlaceholder")} />
+          <Input placeholder={t("ankeai.form.name")} />
         </Form.Item>
 
         <Form.Item
           label={t("ankeai.userGroups.description")}
           name="description"
         >
-          <Input.TextArea
-            placeholder={t("ankeai.userGroups.descriptionPlaceholder")}
-            rows={4}
-          />
+          <Input.TextArea placeholder={t("ankeai.form.description")} rows={4} />
         </Form.Item>
 
-        <Form.Item
-          label={t("ankeai.userGroups.availableAgents")}
-          name="agent_ids"
-        >
+        <Form.Item label={t("ankeai.userGroups.agents")} name="agent_ids">
           <Select
             mode="multiple"
             allowClear
             options={agentOptions}
-            placeholder={t("ankeai.userGroups.availableAgentsPlaceholder")}
+            placeholder={t("ankeai.form.agents")}
           />
         </Form.Item>
       </Form>

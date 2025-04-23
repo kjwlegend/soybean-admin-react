@@ -47,3 +47,11 @@ export function deleteConfig(id: number) {
     url: `/system/configs/${id}`,
   });
 }
+
+export function uploadFile(data: FormData) {
+  return request<Api.SystemManage.File>({
+    method: "post",
+    data,
+    url: "/system/upload",
+  });
+}

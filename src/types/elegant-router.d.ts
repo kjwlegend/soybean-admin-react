@@ -28,22 +28,34 @@ declare module "@soybean-react/vite-plugin-react-router" {
     "document_unocss": "/document/unocss";
     "document_procomponents": "/document/procomponents";
     "document_antd": "/document/antd";
-    "(base)_about": "/about";
+    "(backup)_about": "/about";
+    "(backup)_function": "/function";
+    "(backup)_function_event-bus": "/function/event-bus";
+    "(backup)_function_hide-child": "/function/hide-child";
+    "(backup)_function_hide-child_one": "/function/hide-child/one";
+    "(backup)_function_hide-child_three": "/function/hide-child/three";
+    "(backup)_function_hide-child_two": "/function/hide-child/two";
+    "(backup)_function_multi-tab": "/function/multi-tab";
+    "(backup)_function_request": "/function/request";
+    "(backup)_function_super-page": "/function/super-page";
+    "(backup)_function_tab": "/function/tab";
+    "(backup)_function_toggle-auth": "/function/toggle-auth";
+    "(backup)_function_use-request": "/function/use-request";
+    "(backup)_multi-menu": "/multi-menu";
+    "(backup)_multi-menu_first": "/multi-menu/first";
+    "(backup)_multi-menu_first_child": "/multi-menu/first/child";
+    "(backup)_multi-menu_second": "/multi-menu/second";
+    "(backup)_multi-menu_second_child": "/multi-menu/second/child";
+    "(backup)_multi-menu_second_child_home": "/multi-menu/second/child/home";
+    "(backup)_projects": "/projects";
+    "(backup)_projects_[pid]": "/projects/:pid";
+    "(backup)_projects_[pid]_edit": "/projects/:pid/edit";
+    "(backup)_projects_[pid]_edit_[id]": "/projects/:pid/edit/:id";
+    "(backup)_user-center": "/user-center";
     "(base)_anke-agents": "/anke-agents";
+    "(base)_anke-conversation": "/anke-conversation";
     "(base)_anke-user": "/anke-user";
     "(base)_anke-user-groups": "/anke-user-groups";
-    "(base)_function": "/function";
-    "(base)_function_event-bus": "/function/event-bus";
-    "(base)_function_hide-child": "/function/hide-child";
-    "(base)_function_hide-child_one": "/function/hide-child/one";
-    "(base)_function_hide-child_three": "/function/hide-child/three";
-    "(base)_function_hide-child_two": "/function/hide-child/two";
-    "(base)_function_multi-tab": "/function/multi-tab";
-    "(base)_function_request": "/function/request";
-    "(base)_function_super-page": "/function/super-page";
-    "(base)_function_tab": "/function/tab";
-    "(base)_function_toggle-auth": "/function/toggle-auth";
-    "(base)_function_use-request": "/function/use-request";
     "(base)_home": "/home";
     "(base)_manage": "/manage";
     "(base)_manage_config": "/manage/config";
@@ -51,17 +63,6 @@ declare module "@soybean-react/vite-plugin-react-router" {
     "(base)_manage_role_[...slug]": "/manage/role/*";
     "(base)_manage_user": "/manage/user";
     "(base)_manage_user_[id]": "/manage/user/:id";
-    "(base)_multi-menu": "/multi-menu";
-    "(base)_multi-menu_first": "/multi-menu/first";
-    "(base)_multi-menu_first_child": "/multi-menu/first/child";
-    "(base)_multi-menu_second": "/multi-menu/second";
-    "(base)_multi-menu_second_child": "/multi-menu/second/child";
-    "(base)_multi-menu_second_child_home": "/multi-menu/second/child/home";
-    "(base)_projects": "/projects";
-    "(base)_projects_[pid]": "/projects/:pid";
-    "(base)_projects_[pid]_edit": "/projects/:pid/edit";
-    "(base)_projects_[pid]_edit_[id]": "/projects/:pid/edit/:id";
-    "(base)_user-center": "/user-center";
     "(blank)_login": "/login";
     "(blank)_login_code-login": "/login/code-login";
     "(blank)_login_register": "/login/register";
@@ -114,6 +115,7 @@ declare module "@soybean-react/vite-plugin-react-router" {
    */
   export type FirstLevelRouteKey = Extract<
     RouteKey,
+    | "(backup)"
     | "(base)"
     | "(blank)"
     | "403"
@@ -138,22 +140,34 @@ declare module "@soybean-react/vite-plugin-react-router" {
    */
   export type LastLevelRouteKey = Extract<
     RouteKey,
-    | "(base)_about"
+    | "(backup)_about"
+    | "(backup)_function_event-bus"
+    | "(backup)_function_hide-child"
+    | "(backup)_function_hide-child_one"
+    | "(backup)_function_hide-child_three"
+    | "(backup)_function_hide-child_two"
+    | "(backup)_function"
+    | "(backup)_function_multi-tab"
+    | "(backup)_function_request"
+    | "(backup)_function_super-page"
+    | "(backup)_function_tab"
+    | "(backup)_function_toggle-auth"
+    | "(backup)_function_use-request"
+    | "(backup)_multi-menu_first_child"
+    | "(backup)_multi-menu_first"
+    | "(backup)_multi-menu"
+    | "(backup)_multi-menu_second_child_home"
+    | "(backup)_multi-menu_second_child"
+    | "(backup)_multi-menu_second"
+    | "(backup)_projects_[pid]_edit_[id]"
+    | "(backup)_projects_[pid]_edit"
+    | "(backup)_projects_[pid]"
+    | "(backup)_projects"
+    | "(backup)_user-center"
     | "(base)_anke-agents"
+    | "(base)_anke-conversation"
     | "(base)_anke-user-groups"
     | "(base)_anke-user"
-    | "(base)_function_event-bus"
-    | "(base)_function_hide-child"
-    | "(base)_function_hide-child_one"
-    | "(base)_function_hide-child_three"
-    | "(base)_function_hide-child_two"
-    | "(base)_function"
-    | "(base)_function_multi-tab"
-    | "(base)_function_request"
-    | "(base)_function_super-page"
-    | "(base)_function_tab"
-    | "(base)_function_toggle-auth"
-    | "(base)_function_use-request"
     | "(base)_home"
     | "(base)"
     | "(base)_manage_config"
@@ -162,17 +176,6 @@ declare module "@soybean-react/vite-plugin-react-router" {
     | "(base)_manage_role"
     | "(base)_manage_user_[id]"
     | "(base)_manage_user"
-    | "(base)_multi-menu_first_child"
-    | "(base)_multi-menu_first"
-    | "(base)_multi-menu"
-    | "(base)_multi-menu_second_child_home"
-    | "(base)_multi-menu_second_child"
-    | "(base)_multi-menu_second"
-    | "(base)_projects_[pid]_edit_[id]"
-    | "(base)_projects_[pid]_edit"
-    | "(base)_projects_[pid]"
-    | "(base)_projects"
-    | "(base)_user-center"
     | "(blank)"
     | "(blank)_login-out"
     | "(blank)_login_code-login"
