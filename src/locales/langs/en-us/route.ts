@@ -56,6 +56,7 @@ const route: App.I18n.Schema["translation"]["route"] = {
   "(base)_anke-user": "User Manage",
   "(base)_anke-agents": "Agents Manage",
   "(base)_anke-user-groups": "User Group Manage",
+  "(base)_anke-conversation": "Conversation Manage",
 };
 
 export default route;

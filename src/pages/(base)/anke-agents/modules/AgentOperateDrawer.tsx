@@ -87,6 +87,9 @@ const AgentOperateDrawer: FC<Page.OperateDrawerProps> = ({
         <Form.Item label={t("ankeai.agents.description")} name="description">
           <Input.TextArea placeholder={t("ankeai.form.description")} rows={4} />
         </Form.Item>
+        <Form.Item label={t("ankeai.agents.order")} name="order">
+          <Input placeholder={t("ankeai.form.order")} />
+        </Form.Item>
 
         <Form.Item
           label={t("ankeai.agents.type")}

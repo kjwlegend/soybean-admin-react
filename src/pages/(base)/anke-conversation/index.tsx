@@ -10,7 +10,12 @@ import { fetchConversationList } from "@/service/api/anke-conversation";
 
 import ConversationSearch from "./modules/ConversationSearch";
 
-const WorkflowLogDetailDrawer = lazy(() => import("./modules/WorkflowDetail"));
+const ChatflowDetailDrawer = lazy(
+  () => import("./modules/ChatflowDetailDrawer"),
+);
+const WorkflowDetailDrawer = lazy(
+  () => import("./modules/WorkflowDetailDrawer"),
+);
 
 const AnkeConversationLogManage = () => {
   const { t } = useTranslation();
@@ -120,6 +125,31 @@ const AnkeConversationLogManage = () => {
     setCurrentLog(null);
   };
 
+  // 根据对话类型渲染不同的详情抽屉
+  const renderDetailDrawer = () => {
+    if (!detailVisible || !currentLog) return null;
+
+    const isWorkflow = currentLog.conversation_type === "workflow";
+
+    return (
+      <Suspense>
+        {isWorkflow ? (
+          <WorkflowDetailDrawer
+            visible={detailVisible}
+            data={currentLog}
+            onClose={handleCloseDetail}
+          />
+        ) : (
+          <ChatflowDetailDrawer
+            visible={detailVisible}
+            data={currentLog}
+            onClose={handleCloseDetail}
+          />
+        )}
+      </Suspense>
+    );
+  };
+
   return (
     <div className="h-full min-h-500px flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
       <ACollapse
@@ -153,15 +183,7 @@ const AnkeConversationLogManage = () => {
         }
       >
         <ATable scroll={scrollConfig} size="small" {...tableProps} />
-        <Suspense>
-          {detailVisible && (
-            <WorkflowLogDetailDrawer
-              visible={detailVisible}
-              data={currentLog}
-              onClose={handleCloseDetail}
-            />
-          )}
-        </Suspense>
+        {renderDetailDrawer()}
       </ACard>
     </div>
   );

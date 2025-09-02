@@ -136,6 +136,7 @@ declare namespace Api {
       type: string;
       /** agent api key */
       api_key: string;
+      order: number;
       /** external id */
       external_id?: string;
       /** metadata */

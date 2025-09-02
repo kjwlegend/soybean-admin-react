@@ -181,7 +181,7 @@ const ConfigManage = () => {
                     key={item.key}
                     label={`${item.description} (${item.key})`}
                     name={item.key}
-                    rules={[{ required: true }]} // Keep rules if needed
+                    rules={[{ required: false }]} // Keep rules if needed
                   >
                     {item.field_type === "text" && <Input />}
                     {item.field_type === "textarea" && (

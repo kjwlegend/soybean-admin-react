@@ -48,6 +48,7 @@ const ankeAI: AnkeAI.I18n.Schema = {
       externalId: "External ID",
       status: "Status",
       metadata: "Metadata",
+      chat: "Chat",
     },
   },
 };

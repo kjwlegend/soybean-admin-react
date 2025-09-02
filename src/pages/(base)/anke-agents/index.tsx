@@ -71,6 +71,13 @@ const AnkeAgentManage = () => {
           },
           {
             align: "center",
+            dataIndex: "order",
+            key: "order",
+            minWidth: 200,
+            title: t("ankeai.agents.order"),
+          },
+          {
+            align: "center",
             dataIndex: "type",
             minWidth: 100,
             key: "type",
