@@ -29,7 +29,9 @@ const common: App.I18n.Schema['translation']['common'] = {
   pleaseCheckValue: 'Please check whether the value is valid',
   refresh: 'Refresh',
   reset: 'Reset',
+  save: 'Save',
   search: 'Search',
+  status: 'Status',
   switch: 'Switch',
   tip: 'Tip',
   trigger: 'Trigger',
@@ -38,6 +40,8 @@ const common: App.I18n.Schema['translation']['common'] = {
   updateSuccess: 'Update Success',
   userCenter: 'User Center',
   warning: 'Warning',
+  createdAt: 'Created At',
+  active: 'Active',
   yesOrNo: {
     no: 'No',
     yes: 'Yes'

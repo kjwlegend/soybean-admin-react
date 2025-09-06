@@ -4,3 +4,6 @@ export * from "./system-manage";
 export * from "./system";
 export * from "./anke-agent";
 export * from "./anke-user";
+export * from "./anke-agent-group";
+export * from "./anke-file-storage";
+export * from "./anke-project";

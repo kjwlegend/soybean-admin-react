@@ -67,6 +67,8 @@ declare global {
   const IconMdiDrag: typeof import('~icons/mdi/drag.tsx')['default']
   const IconMdiKeyboardEsc: typeof import('~icons/mdi/keyboard-esc.tsx')['default']
   const IconMdiKeyboardReturn: typeof import('~icons/mdi/keyboard-return.tsx')['default']
+  const IconMdiPin: typeof import('~icons/mdi/pin.tsx')['default']
+  const IconMdiPinOutline: typeof import('~icons/mdi/pin-outline.tsx')['default']
   const IconMdiRefresh: typeof import('~icons/mdi/refresh.tsx')['default']
   const IconUilSearch: typeof import('~icons/uil/search.tsx')['default']
   const Link: typeof import('react-router-dom')['Link']

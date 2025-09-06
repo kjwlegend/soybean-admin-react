@@ -12,6 +12,17 @@ export function fetchAgentList(params: Api.AnkeAI.AgentSearchParams) {
 }
 
 /**
+ * 根据Agent分组获取Agent列表
+ */
+export function fetchAgentsByGroup(groupId: number, params?: Api.AnkeAI.AgentSearchParams) {
+  return ankeRequest<Api.AnkeAI.AgentList>({
+    method: "get",
+    params,
+    url: `/agents?agent_group_id=${groupId}`,
+  });
+}
+
+/**
  * 获取Agent详情
  */
 export function fetchAgentDetail(agentId: number) {

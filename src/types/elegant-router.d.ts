@@ -52,8 +52,11 @@ declare module "@soybean-react/vite-plugin-react-router" {
     "(backup)_projects_[pid]_edit": "/projects/:pid/edit";
     "(backup)_projects_[pid]_edit_[id]": "/projects/:pid/edit/:id";
     "(backup)_user-center": "/user-center";
+    "(base)_anke-agent-groups": "/anke-agent-groups";
     "(base)_anke-agents": "/anke-agents";
     "(base)_anke-conversation": "/anke-conversation";
+    "(base)_anke-file-storage": "/anke-file-storage";
+    "(base)_anke-projects": "/anke-projects";
     "(base)_anke-user": "/anke-user";
     "(base)_anke-user-groups": "/anke-user-groups";
     "(base)_home": "/home";
@@ -164,8 +167,11 @@ declare module "@soybean-react/vite-plugin-react-router" {
     | "(backup)_projects_[pid]"
     | "(backup)_projects"
     | "(backup)_user-center"
+    | "(base)_anke-agent-groups"
     | "(base)_anke-agents"
     | "(base)_anke-conversation"
+    | "(base)_anke-file-storage"
+    | "(base)_anke-projects"
     | "(base)_anke-user-groups"
     | "(base)_anke-user"
     | "(base)_home"

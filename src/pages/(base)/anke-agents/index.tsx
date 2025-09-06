@@ -85,6 +85,22 @@ const AnkeAgentManage = () => {
           },
           {
             align: "center",
+            dataIndex: "agent_group",
+            key: "agent_group",
+            minWidth: 120,
+            title: t("ankeai.agents.agentGroup"),
+            render: (value: Api.AnkeAI.Agent["agent_group"]) =>
+              value ? (
+                <ATag color="cyan">
+                  {value.icon && <i className={value.icon} style={{ marginRight: 4 }} />}
+                  {value.name}
+                </ATag>
+              ) : (
+                "-"
+              ),
+          },
+          {
+            align: "center",
             dataIndex: "status",
             key: "status",
             render: (value: string) => {

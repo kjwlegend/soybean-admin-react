@@ -141,6 +141,17 @@ declare namespace Api {
       external_id?: string;
       /** metadata */
       metadata?: Record<string, any>;
+      /** markdown content */
+      markdown_content?: string;
+      /** agent group id */
+      agent_group_id?: number;
+      /** agent group info */
+      agent_group?: {
+        id: number;
+        name: string;
+        icon?: string;
+        sort_order: number;
+      };
       /** last synced time */
       last_synced?: string;
       /** user groups */
@@ -167,6 +178,10 @@ declare namespace Api {
       external_id?: string;
       /** metadata */
       metadata?: Record<string, any>;
+      /** markdown content */
+      markdown_content?: string;
+      /** agent group id */
+      agent_group_id?: number;
       /** user group ids */
       user_group_ids?: number[];
     }
@@ -183,8 +198,11 @@ declare namespace Api {
       /** external id */
       external_id?: string;
       /** metadata */
-      /** metadata */
       metadata?: Record<string, any>;
+      /** markdown content */
+      markdown_content?: string;
+      /** agent group id */
+      agent_group_id?: number;
       /** user group ids */
       user_group_ids?: number[];
     }
@@ -195,6 +213,8 @@ declare namespace Api {
       name?: string;
       /** agent status */
       status?: string;
+      /** agent group id */
+      agent_group_id?: number;
     }
 
     /** Agent List Response */
@@ -220,6 +240,15 @@ declare namespace Api {
       user_username: string;
 
       title: string;
+      /** is pinned */
+      pinned?: boolean;
+      /** project id */
+      project_id?: number;
+      /** project info */
+      project?: {
+        id: number;
+        title: string;
+      };
       /** is archived */
       is_archived: boolean;
       /** metadata */
@@ -260,6 +289,8 @@ declare namespace Api {
       conversation_type?: ConversationType;
       /** is archived filter */
       is_archived?: boolean;
+      /** project id filter */
+      project_id?: number;
     }
 
     /** Conversation List Response */
@@ -290,5 +321,267 @@ declare namespace Api {
       /** files */
       files?: any[];
     }
+
+    /** Project Management */
+    type Project = Common.CommonRecord<{
+      /** project id */
+      id: number;
+      /** project title */
+      title: string;
+      /** project description */
+      description?: string;
+      /** last updated time */
+      last_updated: string;
+      /** created by admin */
+      created_by: {
+        id: number;
+        username: string;
+        nickname?: string;
+      };
+      /** member count */
+      member_count: number;
+      /** project created time */
+      created_at: string;
+      /** project updated time */
+      updated_at: string;
+    }>;
+
+    /** Project Create Params */
+    interface ProjectCreateParams {
+      /** project title */
+      title: string;
+      /** project description */
+      description?: string;
+    }
+
+    /** Project Update Params */
+    interface ProjectUpdateParams {
+      /** project title */
+      title?: string;
+      /** project description */
+      description?: string;
+    }
+
+    /** Project Search Params */
+    interface ProjectSearchParams extends Common.CommonSearchParams {
+      /** project title */
+      title?: string;
+    }
+
+    /** Project List Response */
+    type ProjectList = Common.PaginatingQueryRecord<Project>;
+
+    /** Project Membership */
+    type ProjectMembership = Common.CommonRecord<{
+      /** membership id */
+      id: number;
+      /** project id */
+      project_id: number;
+      /** user id */
+      user_id: number;
+      /** member role */
+      role: "admin" | "member";
+      /** is active */
+      is_active: boolean;
+      /** joined time */
+      joined_at: string;
+      /** user info */
+      user: {
+        id: number;
+        username: string;
+        email?: string;
+        avatar?: string;
+        membership_level: string;
+      };
+      /** added by admin */
+      added_by: {
+        id: number;
+        username: string;
+        nickname?: string;
+      };
+    }>;
+
+    /** Project Membership Create Params */
+    interface ProjectMembershipCreateParams {
+      /** user id */
+      user_id: number;
+      /** member role */
+      role?: "admin" | "member";
+    }
+
+    /** Project Membership Update Params */
+    interface ProjectMembershipUpdateParams {
+      /** member role */
+      role?: "admin" | "member";
+      /** is active */
+      is_active?: boolean;
+    }
+
+    /** Project Membership List Response */
+    type ProjectMembershipList = Common.PaginatingQueryRecord<ProjectMembership>;
+
+    /** Agent Group Management */
+    type AgentGroup = Common.CommonRecord<{
+      /** agent group id */
+      id: number;
+      /** group name */
+      name: string;
+      /** group description */
+      description?: string;
+      /** FontAwesome icon name */
+      icon?: string;
+      /** sort order */
+      sort_order: number;
+      /** is active */
+      is_active: boolean;
+      /** agent count */
+      agent_count: number;
+      /** created by admin */
+      created_by?: {
+        id: number;
+        username: string;
+        nickname?: string;
+      };
+      /** group created time */
+      created_at: string;
+      /** group updated time */
+      updated_at: string;
+    }>;
+
+    /** Agent Group Create Params */
+    interface AgentGroupCreateParams {
+      /** group name */
+      name: string;
+      /** group description */
+      description?: string;
+      /** FontAwesome icon name */
+      icon?: string;
+      /** sort order */
+      sort_order?: number;
+    }
+
+    /** Agent Group Update Params */
+    interface AgentGroupUpdateParams {
+      /** group name */
+      name?: string;
+      /** group description */
+      description?: string;
+      /** FontAwesome icon name */
+      icon?: string;
+      /** sort order */
+      sort_order?: number;
+      /** is active */
+      is_active?: boolean;
+    }
+
+    /** Agent Group Reorder Request */
+    interface AgentGroupReorderParams {
+      /** group orders */
+      group_orders: Array<{
+        id: number;
+        sort_order: number;
+      }>;
+    }
+
+    /** Agent Group List Response */
+    type AgentGroupList = Common.PaginatingQueryRecord<AgentGroup>;
+
+    /** File Storage Management */
+    type FileAccessLevel = "private" | "project" | "public";
+
+    type FileType = "image" | "document" | "spreadsheet" | "presentation" | "video" | "audio" | "archive" | "text" | "other";
+
+    type FileStorage = Common.CommonRecord<{
+      /** file id */
+      id: number;
+      /** stored filename */
+      filename: string;
+      /** original filename */
+      original_name: string;
+      /** file path */
+      file_path: string;
+      /** file size in bytes */
+      file_size: number;
+      /** file size in MB */
+      file_size_mb: number;
+      /** MIME type */
+      mime_type?: string;
+      /** file type category */
+      file_type?: FileType;
+      /** file hash */
+      file_hash?: string;
+      /** access level */
+      access_level: FileAccessLevel;
+      /** is active */
+      is_active: boolean;
+      /** download count */
+      download_count: number;
+      /** upload date */
+      upload_date: string;
+      /** updated time */
+      updated_at: string;
+      /** public URL for access */
+      public_url?: string;
+      /** uploaded by user */
+      user: {
+        id: number;
+        username: string;
+        email?: string;
+      };
+      /** belongs to project */
+      project?: {
+        id: number;
+        title: string;
+      };
+    }>;
+
+    /** File Upload Params */
+    interface FileUploadParams {
+      /** original filename */
+      original_name: string;
+      /** access level */
+      access_level?: FileAccessLevel;
+      /** project id */
+      project_id?: number;
+    }
+
+    /** File Update Params */
+    interface FileUpdateParams {
+      /** access level */
+      access_level?: FileAccessLevel;
+      /** project id */
+      project_id?: number;
+    }
+
+    /** File Search Params */
+    interface FileSearchParams extends Common.CommonSearchParams {
+      /** project id filter */
+      project_id?: number;
+      /** access level filter */
+      access_level?: FileAccessLevel;
+    }
+
+    /** File Upload Response */
+    interface FileUploadResponse {
+      /** file id */
+      id: number;
+      /** stored filename */
+      filename: string;
+      /** original filename */
+      original_name: string;
+      /** file size */
+      file_size: number;
+      /** file size in MB */
+      file_size_mb: number;
+      /** access level */
+      access_level: FileAccessLevel;
+      /** upload date */
+      upload_date: string;
+      /** download URL */
+      download_url: string;
+    }
+
+    /** File List Response */
+    type FileStorageList = Common.PaginatingQueryRecord<FileStorage>;
   }
 }

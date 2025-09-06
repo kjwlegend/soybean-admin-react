@@ -29,7 +29,9 @@ const common: App.I18n.Schema['translation']['common'] = {
   pleaseCheckValue: '请检查输入的值是否合法',
   refresh: '刷新',
   reset: '重置',
+  save: '保存',
   search: '搜索',
+  status: '状态',
   switch: '切换',
   tip: '提示',
   trigger: '触发',
@@ -38,6 +40,8 @@ const common: App.I18n.Schema['translation']['common'] = {
   updateSuccess: '更新成功',
   userCenter: '个人中心',
   warning: '警告',
+  createdAt: '创建时间',
+  active: '启用',
   yesOrNo: {
     no: '否',
     yes: '是'

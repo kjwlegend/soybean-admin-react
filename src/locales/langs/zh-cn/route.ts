@@ -58,6 +58,9 @@ const route: App.I18n.Schema["translation"]["route"] = {
   "(base)_anke-agents": "智能体管理",
   "(base)_anke-user-groups": "用户组管理",
   "(base)_anke-conversation": "会话管理",
+  "(base)_anke-projects": "项目管理",
+  "(base)_anke-agent-groups": "智能体分组管理",
+  "(base)_anke-file-storage": "文件存储管理",
 };
 
 export default route;

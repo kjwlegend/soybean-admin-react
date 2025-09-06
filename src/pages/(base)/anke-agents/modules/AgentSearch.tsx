@@ -32,6 +32,15 @@ const AgentSearch: FC<Page.SearchProps> = ({
           placeholder={t("ankeai.form.status")}
         />
       </Form.Item>
+      <Form.Item name="agent_group_id" label={t("ankeai.agents.agentGroup")}>
+        <Select
+          allowClear
+          placeholder={t("ankeai.form.selectAgentGroup")}
+          style={{ width: 150 }}
+        >
+          {/* Agent group options would be loaded dynamically */}
+        </Select>
+      </Form.Item>
 
       <Col>
         <Form.Item className="m-0">

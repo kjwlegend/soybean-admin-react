@@ -3,7 +3,7 @@ import { Button, Drawer, Flex, Form, Input, Select, Switch } from "antd";
 import type { FC } from "react";
 
 import { useFormRules } from "@/features/form";
-import { fetchUserGroupList } from "@/service/api";
+import { fetchUserGroupList, fetchAgentGroupList } from "@/service/api";
 
 interface OptionsProps {
   label: string;
@@ -38,10 +38,24 @@ const AgentOperateDrawer: FC<Page.OperateDrawerProps> = ({
     },
   );
 
+  const { data: agentGroups } = useRequest(
+    () => fetchAgentGroupList({ page: 1, size: 100 }),
+    {
+      manual: false,
+    },
+  );
+
   const { defaultRequiredRule, patternRules } = useFormRules();
 
   const userGroupOptions: OptionsProps[] = userGroups
     ? userGroups.items.map((group) => ({
+        label: group.name,
+        value: group.id,
+      }))
+    : [];
+
+  const agentGroupOptions: OptionsProps[] = agentGroups
+    ? agentGroups.items.map((group) => ({
         label: group.name,
         value: group.id,
       }))
@@ -128,6 +142,21 @@ const AgentOperateDrawer: FC<Page.OperateDrawerProps> = ({
               },
             ]}
             placeholder={t("ankeai.form.status")}
+          />
+        </Form.Item>
+
+        <Form.Item label={t("ankeai.agents.agentGroup")} name="agent_group_id">
+          <Select
+            options={agentGroupOptions}
+            placeholder={t("ankeai.form.agentGroup")}
+            allowClear
+          />
+        </Form.Item>
+
+        <Form.Item label={t("ankeai.agents.markdownContent")} name="markdown_content">
+          <Input.TextArea 
+            placeholder={t("ankeai.form.markdownContent")} 
+            rows={6}
           />
         </Form.Item>
 

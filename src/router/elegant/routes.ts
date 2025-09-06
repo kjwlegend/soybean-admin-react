@@ -213,6 +213,12 @@ export const generatedRoutes: ElegantConstRoute[] = [
         name: '(base)',
         children: [
           {
+            matchedFiles: [null, '/src/pages/(base)/anke-agent-groups/index.tsx', null, null],
+            name: '(base)_anke-agent-groups',
+            path: '/anke-agent-groups',
+            handle: { i18nKey: 'route.(base)_anke-agent-groups', title: '(base)_anke-agent-groups' }
+          },
+          {
             matchedFiles: [null, '/src/pages/(base)/anke-agents/index.tsx', null, null],
             name: '(base)_anke-agents',
             path: '/anke-agents',
@@ -223,6 +229,18 @@ export const generatedRoutes: ElegantConstRoute[] = [
             name: '(base)_anke-conversation',
             path: '/anke-conversation',
             handle: { i18nKey: 'route.(base)_anke-conversation', title: '(base)_anke-conversation' }
+          },
+          {
+            matchedFiles: [null, '/src/pages/(base)/anke-file-storage/index.tsx', null, null],
+            name: '(base)_anke-file-storage',
+            path: '/anke-file-storage',
+            handle: { i18nKey: 'route.(base)_anke-file-storage', title: '(base)_anke-file-storage' }
+          },
+          {
+            matchedFiles: [null, '/src/pages/(base)/anke-projects/index.tsx', null, null],
+            name: '(base)_anke-projects',
+            path: '/anke-projects',
+            handle: { i18nKey: 'route.(base)_anke-projects', title: '(base)_anke-projects' }
           },
           {
             matchedFiles: [null, '/src/pages/(base)/anke-user/index.tsx', null, null],

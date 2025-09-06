@@ -6,7 +6,8 @@ import {
   useTableOperate,
   useTableScroll,
 } from "@/features/table";
-import { fetchConversationList } from "@/service/api/anke-conversation";
+import { fetchConversationList, toggleConversationPin } from "@/service/api/anke-conversation";
+import { message } from "antd";
 
 import ConversationSearch from "./modules/ConversationSearch";
 
@@ -51,6 +52,22 @@ const AnkeConversationLogManage = () => {
             key: "id",
             width: 80,
             title: "ID",
+          },
+          {
+            align: "center",
+            dataIndex: "pinned",
+            key: "pinned",
+            width: 80,
+            title: t("ankeai.conversations.pinned"),
+            render: (value: boolean, record: Api.AnkeAI.Conversation) => (
+              <AButton
+                type={value ? "primary" : "default"}
+                size="small"
+                icon={value ? <IconMdiPin /> : <IconMdiPinOutline />}
+                onClick={() => handleTogglePin(record)}
+                title={value ? t("ankeai.conversations.unpin") : t("ankeai.conversations.pin")}
+              />
+            ),
           },
           {
             align: "center",
@@ -123,6 +140,20 @@ const AnkeConversationLogManage = () => {
   const handleCloseDetail = () => {
     setDetailVisible(false);
     setCurrentLog(null);
+  };
+
+  const handleTogglePin = async (record: Api.AnkeAI.Conversation) => {
+    try {
+      await toggleConversationPin(record.id, !record.pinned);
+      message.success(
+        record.pinned 
+          ? t("ankeai.conversations.unpinSuccess")
+          : t("ankeai.conversations.pinSuccess")
+      );
+      run(); // Refresh the table
+    } catch (error) {
+      message.error(t("ankeai.conversations.pinFailed"));
+    }
   };
 
   // 根据对话类型渲染不同的详情抽屉
