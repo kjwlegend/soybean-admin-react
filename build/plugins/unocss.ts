@@ -6,7 +6,7 @@ import presetIcons from '@unocss/preset-icons';
 import unocss from '@unocss/vite';
 
 export function setupUnocss(viteEnv: Env.ImportMeta) {
-  const { VITE_ICON_LOCAL_PREFIX, VITE_ICON_PREFIX } = viteEnv;
+  const { VITE_ICON_LOCAL_PREFIX = 'local-icon', VITE_ICON_PREFIX = 'icon' } = viteEnv;
 
   const localIconPath = path.join(process.cwd(), 'src/assets/svg-icon');
 

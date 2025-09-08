@@ -1,13 +1,18 @@
-import { Button, Drawer, Flex, Form, Input, Select } from "antd";
+import { Button, Drawer, Flex, Form, Input, Select, Upload, Avatar, Space, message } from "antd";
 import type { FC } from "react";
+import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { UploadOutlined } from "@ant-design/icons";
 import { useRequest } from "@sa/hooks";
 import { fetchAgentList } from "@/service/api";
+import { ankeUploadFile } from "@/service/api/anke-file-storage";
 
 // 用户组模型定义
 type UserGroupModel = {
   id?: number;
   name: string;
   description?: string;
+  logo_url?: string;
   available_agents_ids?: number[];
 };
 
@@ -22,6 +27,8 @@ const UserGroupOperateDrawer: FC<Page.OperateDrawerProps> = ({
   operateType,
 }) => {
   const { t } = useTranslation();
+  const [logoUrl, setLogoUrl] = useState<string>("");
+  const [uploading, setUploading] = useState(false);
 
   // 获取可用的 agents 列表
   const { data: agents } = useRequest(
@@ -38,10 +45,42 @@ const UserGroupOperateDrawer: FC<Page.OperateDrawerProps> = ({
       }))
     : [];
 
+  // 处理logo上传
+  const handleLogoUpload = async (file: any) => {
+    try {
+      setUploading(true);
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("access_level", "public");
+      const response = await ankeUploadFile(formData);
+      const uploadedUrl = response.data?.public_url || response.data?.download_url || "";
+      if (!uploadedUrl) {
+        throw new Error("Upload response missing URL");
+      }
+      setLogoUrl(uploadedUrl);
+      form.setFieldValue("logo_url", uploadedUrl);
+      message.success(t("ankeai.userGroups.logoUploadSuccess"));
+    } catch (error) {
+      console.error("Upload failed:", error);
+      message.error(t("ankeai.userGroups.logoUploadFailed"));
+    } finally {
+      setUploading(false);
+    }
+    return false; // 阻止默认上传行为
+  };
+
   // 表单验证规则
   const rules: Record<RuleKey, App.Global.FormRule[]> = {
     name: [{ required: true, message: t("ankeai.userGroups.nameRequired") }],
   };
+
+  // 监听表单数据变化，同步logo_url
+  useEffect(() => {
+    if (open) {
+      const formLogoUrl = form.getFieldValue("logo_url");
+      setLogoUrl(formLogoUrl || "");
+    }
+  }, [open, form]);
 
   return (
     <Drawer
@@ -79,6 +118,35 @@ const UserGroupOperateDrawer: FC<Page.OperateDrawerProps> = ({
           name="description"
         >
           <Input.TextArea placeholder={t("ankeai.form.description")} rows={4} />
+        </Form.Item>
+
+        <Form.Item
+          label={t("ankeai.userGroups.logo")}
+          name="logo_url"
+        >
+          <Space direction="vertical" style={{ width: '100%' }}>
+            <Upload
+              name="file"
+              accept="image/*"
+              showUploadList={false}
+              beforeUpload={handleLogoUpload}
+              disabled={uploading}
+            >
+              <Button icon={<UploadOutlined />} loading={uploading}>
+                {uploading ? t("ankeai.userGroups.uploading") : t("ankeai.userGroups.uploadLogo")}
+              </Button>
+            </Upload>
+            {logoUrl && (
+              <div style={{ marginTop: 8 }}>
+                <Avatar
+                  src={logoUrl}
+                  size={64}
+                  shape="square"
+                  alt="Group Logo Preview"
+                />
+              </div>
+            )}
+          </Space>
         </Form.Item>
 
         <Form.Item label={t("ankeai.userGroups.agents")} name="agent_ids">

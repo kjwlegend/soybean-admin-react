@@ -13,6 +13,19 @@ import {
   updateUserGroup,
 } from "@/service/api/anke-user";
 
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { useMobile } from "@/hooks/common/mobile";
+import {
+  Button as AButton,
+  Card as ACard,
+  Collapse as ACollapse,
+  Popconfirm as APopconfirm,
+  Table as ATable,
+  Tag as ATag,
+  Avatar,
+} from "antd";
+
 import UserGroupSearch from "./modules/UserGroupSearch";
 
 const UserGroupOperateDrawer = lazy(
@@ -51,6 +64,24 @@ const AnkeUserGroupManage = () => {
             key: "name",
             minWidth: 50,
             title: t("ankeai.userGroups.name"),
+          },
+          {
+            align: "center",
+            dataIndex: "logo_url",
+            key: "logo_url",
+            minWidth: 80,
+            title: t("ankeai.userGroups.logo"),
+            render: (value: string) => {
+              if (!value) return "-";
+              return (
+                <Avatar
+                  src={value}
+                  size={32}
+                  shape="square"
+                  alt="Group Logo"
+                />
+              );
+            },
           },
           {
             align: "center",

@@ -22,7 +22,9 @@ import { useState } from "react";
 
 import ProjectSearch from "./modules/ProjectSearch";
 
-const ProjectOperateDrawer = lazy(() => import("./modules/ProjectOperateDrawer"));
+const ProjectOperateDrawer = lazy(
+  () => import("./modules/ProjectOperateDrawer"),
+);
 const UserAssignmentModal = lazy(() => import("./modules/UserAssignmentModal"));
 
 const AnkeProjectManage = () => {
@@ -71,7 +73,9 @@ const AnkeProjectManage = () => {
             minWidth: 100,
             title: t("ankeai.projects.memberCount"),
             render: (value: number) => (
-              <Tag color="blue">{value} {t("ankeai.projects.members")}</Tag>
+              <Tag color="blue">
+                {value} {t("ankeai.projects.members")}
+              </Tag>
             ),
           },
           {
@@ -80,7 +84,8 @@ const AnkeProjectManage = () => {
             key: "created_by",
             minWidth: 120,
             title: t("ankeai.projects.createdBy"),
-            render: (value: Api.AnkeAI.Project["created_by"]) => value?.username || "-",
+            render: (value: Api.AnkeAI.Project["created_by"]) =>
+              value?.username || "-",
           },
           {
             align: "center",
@@ -146,17 +151,13 @@ const AnkeProjectManage = () => {
     onBatchDeleted,
     onDeleted,
     rowSelection,
-  } = useTableOperate(
-    data,
-    run,
-    async (res, type) => {
-      if (type === "add") {
-        await createProject(res);
-      } else {
-        await updateProject(res.id, res);
-      }
+  } = useTableOperate(data, run, async (res, type) => {
+    if (type === "add") {
+      await createProject(res);
+    } else {
+      await updateProject(res.id, res);
     }
-  );
+  });
 
   async function handleDelete(id: number) {
     await deleteProject(id);
@@ -164,7 +165,8 @@ const AnkeProjectManage = () => {
   }
 
   const [memberModalVisible, setMemberModalVisible] = useState(false);
-  const [memberOperatedRecord, setMemberOperatedRecord] = useState<Api.AnkeAI.Project | null>(null);
+  const [memberOperatedRecord, setMemberOperatedRecord] =
+    useState<Api.AnkeAI.Project | null>(null);
 
   const handleUserAssignment = (projectRecord: Api.AnkeAI.Project) => {
     setMemberOperatedRecord(projectRecord);
@@ -199,13 +201,15 @@ const AnkeProjectManage = () => {
             refresh={run}
             setColumnChecks={setColumnChecks}
             onDelete={async () => {
-              await Promise.all(checkedRowKeys.map((id) => deleteProject(Number(id))));
+              await Promise.all(
+                checkedRowKeys.map((id) => deleteProject(Number(id))),
+              );
               onBatchDeleted();
             }}
           />
         }
       >
-        <div className="overflow-hidden" ref={tableWrapperRef}>
+        <div className="overflow-hidden h-full" ref={tableWrapperRef}>
           <Table
             rowSelection={rowSelection}
             scroll={scrollConfig}

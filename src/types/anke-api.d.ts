@@ -95,6 +95,7 @@ declare namespace Api {
       id: number;
       name: string;
       description?: string;
+      logo_url?: string;
       agent_ids: number[];
       agents?: Array<{
         id: number;
@@ -442,6 +443,10 @@ declare namespace Api {
         username: string;
         nickname?: string;
       };
+      /** associated projects */
+      projects?: Project[];
+      /** project count */
+      project_count?: number;
       /** group created time */
       created_at: string;
       /** group updated time */

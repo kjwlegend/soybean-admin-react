@@ -7,7 +7,7 @@ import type { PluginOption } from 'vite';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 
 export function setupUnPluginIcon(viteEnv: Env.ImportMeta) {
-  const { VITE_ICON_LOCAL_PREFIX, VITE_ICON_PREFIX } = viteEnv;
+  const { VITE_ICON_LOCAL_PREFIX = 'local-icon', VITE_ICON_PREFIX = 'icon' } = viteEnv;
 
   const localIconPath = path.join(process.cwd(), 'src/assets/svg-icon');
   /** The name of the local icon collection */

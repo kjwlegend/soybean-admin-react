@@ -2,7 +2,7 @@ import AutoImport from 'unplugin-auto-import/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 
 export function setupAutoImport(viteEnv: Env.ImportMeta) {
-  const { VITE_ICON_LOCAL_PREFIX, VITE_ICON_PREFIX } = viteEnv;
+  const { VITE_ICON_LOCAL_PREFIX = 'local-icon', VITE_ICON_PREFIX = 'icon' } = viteEnv;
   const collectionName = VITE_ICON_LOCAL_PREFIX.replace(`${VITE_ICON_PREFIX}-`, '');
   return AutoImport({
     dirs: ['src/hooks/**', 'src/components/**'],

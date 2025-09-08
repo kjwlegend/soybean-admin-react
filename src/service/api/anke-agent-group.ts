@@ -80,3 +80,43 @@ export function fetchGroupAgents(
     url: `/agent-groups/${groupId}/agents`,
   });
 }
+
+/**
+ * 获取Agent组关联的项目列表
+ */
+export function fetchAgentGroupProjects(
+  groupId: number,
+  params?: Api.Common.CommonSearchParams,
+) {
+  return ankeRequest<Api.AnkeAI.ProjectList>({
+    method: "get",
+    params,
+    url: `/agent-groups/${groupId}/projects`,
+  });
+}
+
+/**
+ * 将Agent组关联到项目
+ */
+export function associateAgentGroupWithProject(
+  groupId: number,
+  projectId: number,
+) {
+  return ankeRequest<void>({
+    method: "post",
+    url: `/projects/${projectId}/agent-groups/${groupId}`,
+  });
+}
+
+/**
+ * 取消Agent组与项目的关联
+ */
+export function dissociateAgentGroupFromProject(
+  groupId: number,
+  projectId: number,
+) {
+  return ankeRequest<void>({
+    method: "delete",
+    url: `/projects/${projectId}/agent-groups/${groupId}`,
+  });
+}

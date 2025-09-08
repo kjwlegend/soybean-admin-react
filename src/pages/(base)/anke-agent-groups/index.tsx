@@ -34,7 +34,9 @@ import {
 
 import AgentGroupSearch from "./modules/AgentGroupSearch";
 
-const AgentGroupOperateDrawer = lazy(() => import("./modules/AgentGroupOperateDrawer"));
+const AgentGroupOperateDrawer = lazy(
+  () => import("./modules/AgentGroupOperateDrawer"),
+);
 const GroupSortModal = lazy(() => import("./modules/GroupSortModal"));
 
 const AnkeAgentGroupManage = () => {
@@ -66,9 +68,7 @@ const AnkeAgentGroupManage = () => {
             key: "sort_order",
             minWidth: 100,
             title: t("ankeai.agentGroups.sortOrder"),
-            render: (value: number) => (
-              <ATag color="purple">#{value}</ATag>
-            ),
+            render: (value: number) => <ATag color="purple">#{value}</ATag>,
           },
           {
             align: "center",
@@ -87,7 +87,7 @@ const AnkeAgentGroupManage = () => {
               if (!value) return "-";
               return (
                 <div className="flex justify-center">
-                  <i className={value} style={{ fontSize: '18px' }} />
+                  <i className={value} style={{ fontSize: "18px" }} />
                 </div>
               );
             },
@@ -107,7 +107,21 @@ const AnkeAgentGroupManage = () => {
             minWidth: 100,
             title: t("ankeai.agentGroups.agentCount"),
             render: (value: number) => (
-              <ATag color="blue">{value} {t("ankeai.agentGroups.agents")}</ATag>
+              <ATag color="blue">
+                {value} {t("ankeai.agentGroups.agents")}
+              </ATag>
+            ),
+          },
+          {
+            align: "center",
+            dataIndex: "project_count",
+            key: "project_count",
+            minWidth: 120,
+            title: t("ankeai.agentGroups.projectCount"),
+            render: (value: number) => (
+              <ATag color="green">
+                {value || 0} {t("ankeai.agentGroups.projects")}
+              </ATag>
             ),
           },
           {
@@ -221,7 +235,7 @@ const AnkeAgentGroupManage = () => {
         variant="borderless"
         extra={
           <div className="flex gap-2">
-            <Button 
+            <Button
               type="default"
               icon={<SortAscendingOutlined />}
               onClick={handleOpenSortModal}
@@ -240,7 +254,7 @@ const AnkeAgentGroupManage = () => {
           </div>
         }
       >
-        <div className="overflow-hidden" ref={tableWrapperRef}>
+        <div className="overflow-hidden h-full" ref={tableWrapperRef}>
           <ATable
             rowSelection={rowSelection}
             scroll={scrollConfig}
