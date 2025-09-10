@@ -1,11 +1,11 @@
-import { Button, Drawer, Flex, Form, Input, Select, Upload, Avatar, Space, message } from "antd";
+import { Button, Drawer, Flex, Form, Input, Select, Avatar, Space } from "antd";
 import type { FC } from "react";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { UploadOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { useRequest } from "@sa/hooks";
 import { fetchAgentList } from "@/service/api";
-import { ankeUploadFile } from "@/service/api/anke-file-storage";
+import LogoUploadModal from "./LogoUploadModal";
 
 // 用户组模型定义
 type UserGroupModel = {
@@ -28,7 +28,7 @@ const UserGroupOperateDrawer: FC<Page.OperateDrawerProps> = ({
 }) => {
   const { t } = useTranslation();
   const [logoUrl, setLogoUrl] = useState<string>("");
-  const [uploading, setUploading] = useState(false);
+  const [logoModalOpen, setLogoModalOpen] = useState(false);
 
   // 获取可用的 agents 列表
   const { data: agents } = useRequest(
@@ -45,28 +45,25 @@ const UserGroupOperateDrawer: FC<Page.OperateDrawerProps> = ({
       }))
     : [];
 
-  // 处理logo上传
-  const handleLogoUpload = async (file: any) => {
-    try {
-      setUploading(true);
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("access_level", "public");
-      const response = await ankeUploadFile(formData);
-      const uploadedUrl = response.data?.public_url || response.data?.download_url || "";
-      if (!uploadedUrl) {
-        throw new Error("Upload response missing URL");
-      }
-      setLogoUrl(uploadedUrl);
-      form.setFieldValue("logo_url", uploadedUrl);
-      message.success(t("ankeai.userGroups.logoUploadSuccess"));
-    } catch (error) {
-      console.error("Upload failed:", error);
-      message.error(t("ankeai.userGroups.logoUploadFailed"));
-    } finally {
-      setUploading(false);
+  // 处理logo选择
+  const handleLogoSelect = (selectedUrl: string) => {
+    // 处理返回的URL，确保格式正确
+    let finalUrl = selectedUrl;
+    
+    // 如果是相对路径（以/storage开头），添加基础URL
+    if (selectedUrl && selectedUrl.startsWith('/storage')) {
+      const baseUrl = import.meta.env.DEV ? 'http://localhost:8000' : '';
+      finalUrl = `${baseUrl}${selectedUrl}`;
     }
-    return false; // 阻止默认上传行为
+    
+    setLogoUrl(finalUrl);
+    form.setFieldValue("logo_url", finalUrl);
+  };
+
+  // 清除logo
+  const handleClearLogo = () => {
+    setLogoUrl("");
+    form.setFieldValue("logo_url", "");
   };
 
   // 表单验证规则
@@ -77,8 +74,17 @@ const UserGroupOperateDrawer: FC<Page.OperateDrawerProps> = ({
   // 监听表单数据变化，同步logo_url
   useEffect(() => {
     if (open) {
-      const formLogoUrl = form.getFieldValue("logo_url");
-      setLogoUrl(formLogoUrl || "");
+      // 延迟获取表单值，确保表单已经被填充
+      setTimeout(() => {
+        const formValues = form.getFieldsValue();
+        const formLogoUrl = formValues.logo_url;
+        console.log('Form values:', formValues);
+        console.log('Logo URL from form:', formLogoUrl);
+        setLogoUrl(formLogoUrl || "");
+      }, 100);
+    } else {
+      // 关闭时清空logoUrl
+      setLogoUrl("");
     }
   }, [open, form]);
 
@@ -125,17 +131,23 @@ const UserGroupOperateDrawer: FC<Page.OperateDrawerProps> = ({
           name="logo_url"
         >
           <Space direction="vertical" style={{ width: '100%' }}>
-            <Upload
-              name="file"
-              accept="image/*"
-              showUploadList={false}
-              beforeUpload={handleLogoUpload}
-              disabled={uploading}
-            >
-              <Button icon={<UploadOutlined />} loading={uploading}>
-                {uploading ? t("ankeai.userGroups.uploading") : t("ankeai.userGroups.uploadLogo")}
+            <Space>
+              <Button 
+                icon={<EditOutlined />} 
+                onClick={() => setLogoModalOpen(true)}
+              >
+                {logoUrl ? t("ankeai.userGroups.changeLogo") : t("ankeai.userGroups.selectLogo")}
               </Button>
-            </Upload>
+              {logoUrl && (
+                <Button 
+                  icon={<DeleteOutlined />} 
+                  danger
+                  onClick={handleClearLogo}
+                >
+                  {t("ankeai.userGroups.clearLogo")}
+                </Button>
+              )}
+            </Space>
             {logoUrl && (
               <div style={{ marginTop: 8 }}>
                 <Avatar
@@ -144,6 +156,9 @@ const UserGroupOperateDrawer: FC<Page.OperateDrawerProps> = ({
                   shape="square"
                   alt="Group Logo Preview"
                 />
+                <div className="text-xs text-gray-500 mt-1 break-all" style={{ maxWidth: '300px' }}>
+                  {logoUrl}
+                </div>
               </div>
             )}
           </Space>
@@ -158,6 +173,16 @@ const UserGroupOperateDrawer: FC<Page.OperateDrawerProps> = ({
           />
         </Form.Item>
       </Form>
+      
+      <LogoUploadModal
+        open={logoModalOpen}
+        currentLogoUrl={logoUrl}
+        onClose={() => setLogoModalOpen(false)}
+        onConfirm={(url) => {
+          handleLogoSelect(url);
+          setLogoModalOpen(false);
+        }}
+      />
     </Drawer>
   );
 };

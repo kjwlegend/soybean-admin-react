@@ -108,12 +108,14 @@ declare namespace Api {
     type UserGroupCreateParams = {
       name: string;
       description?: string;
+      logo_url?: string;
       agent_ids?: number[];
     };
 
     type UserGroupUpdateParams = {
       name?: string;
       description?: string;
+      logo_url?: string;
       agent_ids?: number[];
     };
 

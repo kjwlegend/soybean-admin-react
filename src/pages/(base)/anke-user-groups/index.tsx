@@ -73,9 +73,15 @@ const AnkeUserGroupManage = () => {
             title: t("ankeai.userGroups.logo"),
             render: (value: string) => {
               if (!value) return "-";
+              // 处理相对路径
+              let logoUrl = value;
+              if (value.startsWith('/storage')) {
+                const baseUrl = import.meta.env.DEV ? 'http://localhost:8000' : '';
+                logoUrl = `${baseUrl}${value}`;
+              }
               return (
                 <Avatar
-                  src={value}
+                  src={logoUrl}
                   size={32}
                   shape="square"
                   alt="Group Logo"

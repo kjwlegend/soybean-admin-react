@@ -92,7 +92,7 @@ export function updateUserGroup(
   groupId: number,
   data: Api.AnkeAI.UserGroupUpdateParams,
 ) {
-  return ankeRequest<Api.AnkeAI.User>({
+  return ankeRequest<Api.AnkeAI.UserGroup>({
     method: "put",
     data,
     url: `/users/user-groups/${groupId}`,

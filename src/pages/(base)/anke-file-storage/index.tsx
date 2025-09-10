@@ -292,7 +292,10 @@ const AnkeFileStorageManage = () => {
   };
 
   const handleCopyPublicUrl = async (record: Api.AnkeAI.FileStorage) => {
-    const publicUrl = generatePublicUrl(record.id, record.access_level);
+    // 使用file_path字段生成公开访问URL
+    const publicUrl = record.file_path 
+      ? generatePublicUrl(record.file_path, record.access_level, true)
+      : generatePublicUrl(record.id, record.access_level, false);
     if (publicUrl) {
       try {
         await navigator.clipboard.writeText(publicUrl);
@@ -439,7 +442,9 @@ const AnkeFileStorageManage = () => {
                 <div className="flex items-center space-x-2 mt-2">
                   <input 
                     type="text" 
-                    value={generatePublicUrl(selectedFile.id, selectedFile.access_level) || ''} 
+                    value={selectedFile.file_path 
+                      ? generatePublicUrl(selectedFile.file_path, selectedFile.access_level, true) 
+                      : generatePublicUrl(selectedFile.id, selectedFile.access_level, false) || ''} 
                     readOnly 
                     className="flex-1 p-2 border rounded text-sm"
                   />

@@ -12,6 +12,21 @@ export function fetchFileList(params: Api.AnkeAI.FileSearchParams) {
 }
 
 /**
+ * 获取图片文件列表（仅返回图片类型）
+ */
+export function fetchImageFileList(params?: {
+  page?: number;
+  size?: number;
+  project_id?: number;
+}) {
+  return ankeRequest<Api.AnkeAI.FileStorageList>({
+    method: "get",
+    params,
+    url: "/files/images",
+  });
+}
+
+/**
  * 获取文件详情
  */
 export function fetchFileDetail(fileId: number) {

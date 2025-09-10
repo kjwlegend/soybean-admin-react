@@ -68,6 +68,7 @@ export function getServiceBaseURL(env: Env.ImportMeta, isProxy: boolean) {
     baseURL: isProxy ? createProxyPattern() : baseURL,
     otherBaseURL,
   };
+  
 }
 
 /**

@@ -159,14 +159,37 @@ export function formatFileSize(bytes: number): string {
 
 /**
  * 生成公共访问URL
+ * @param filePathOrId - 文件路径或文件ID
+ * @param accessLevel - 访问级别
+ * @param isFilePath - 是否是文件路径（true时第一个参数是路径，false时是ID）
  */
-export function generatePublicUrl(fileId: number, accessLevel: Api.AnkeAI.FileAccessLevel): string | null {
+export function generatePublicUrl(
+  filePathOrId: string | number, 
+  accessLevel: Api.AnkeAI.FileAccessLevel,
+  isFilePath: boolean = false
+): string | null {
   if (accessLevel !== 'public') return null;
   
   // 根据实际部署环境调整域名
   const baseUrl = process.env.NODE_ENV === 'production' 
     ? 'https://your-domain.com' 
     : 'http://localhost:8000';
+  
+  // 如果是文件路径，直接拼接静态文件访问路径
+  if (isFilePath && typeof filePathOrId === 'string') {
+    // 统一处理路径分隔符（Windows使用\，Unix使用/）
+    let normalizedPath = filePathOrId.replace(/\\/g, '/');
     
-  return `${baseUrl}/api/v1/app/AnkeAI/files/public/${fileId}`;
+    // 移除可能的前缀路径，包括完整路径和storage前缀
+    // 处理如 D:\codes\...\storage\public\file.png 或 /storage/public/file.png
+    normalizedPath = normalizedPath.replace(/^.*[\\\/]storage[\\\/]/, '');
+    
+    // 确保没有重复的storage
+    normalizedPath = normalizedPath.replace(/^storage[\\\/]/, '');
+    
+    return `${baseUrl}/storage/${normalizedPath}`;
+  }
+  
+  // 兼容旧的ID方式
+  return `${baseUrl}/api/v1/app/AnkeAI/files/public/${filePathOrId}`;
 }
